@@ -3,12 +3,8 @@
  * Cloudflare Workers backend
  */
 
-import { Hono } from "hono";
+import { createApp } from "./app";
 
-const app = new Hono();
-
-app.get("/", (c) => {
-	return c.json({ message: "MoradBot API v0.1.0" });
-});
+const app = createApp();
 
 export default app;

@@ -20,6 +20,13 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
     },
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-mermaid"
+      ]
+    },
     "executeautomation-playwright-server": {
       "command": "npx",
       "args": ["-y", "@executeautomation/playwright-mcp-server"]

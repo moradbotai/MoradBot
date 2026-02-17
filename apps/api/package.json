@@ -16,6 +16,7 @@
     "@moradbot/shared": "workspace:*",
     "@moradbot/ai-orchestrator": "workspace:*",
     "@moradbot/salla-client": "workspace:*",
+    "@supabase/supabase-js": "^2.48.0",
     "hono": "^4.6.14",
     "@hono/zod-validator": "^0.4.1",
     "zod": "^3.24.1"
