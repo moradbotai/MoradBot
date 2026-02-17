@@ -1,0 +1,29 @@
+{
+  "name": "@moradbot/salla-client",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Salla API client and OAuth integration",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint .",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@moradbot/shared": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--read-only",
+        "--project-ref=<project-ref>"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "<personal-access-token>"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "executeautomation-playwright-server": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "mcp-server-box": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/mcp-server-box", "run", "src/mcp_server_box.py"]
+    },
+    "browser-server": {
+      "command": "browser-use-mcp-server",
+      "args": ["run", "server", "--port", "8000", "--stdio", "--proxy-port", "9000"],
+      "env": {
+        "OPENAI_API_KEY": "your-api-key"
+      }
+    },
+    "DeepGraph Next.js MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "vercel/next.js"]
+    },
+    "DeepGraph React MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "facebook/react"]
+    },
+    "DeepGraph TypeScript MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "microsoft/TypeScript"]
+    },
+    "firecrawl-mcp": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "YOUR-API-KEY"
+      }
+    },
+    "imagesorcery-mcp": {
+      "command": "imagesorcery-mcp",
+      "transportType": "stdio",
+      "autoApprove": [
+        "blur",
+        "change_color",
+        "config",
+        "crop",
+        "detect",
+        "draw_arrows",
+        "draw_circles",
+        "draw_lines",
+        "draw_rectangles",
+        "draw_texts",
+        "fill",
+        "find",
+        "get_metainfo",
+        "ocr",
+        "overlay",
+        "resize",
+        "rotate"
+      ],
+      "timeout": 100
+    },
+    "postgres-documentation": {
+      "url": "https://mcp.tigerdata.com/docs"
+    },
+    "TestSprite": {
+      "command": "npx",
+      "args": ["@testsprite/testsprite-mcp@latest"],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/files"]
+    },
+    "markitdown": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "markitdown-mcp:latest"]
+    },
+    "playwright-server": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}

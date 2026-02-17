@@ -1,0 +1,28 @@
+{
+  "name": "@moradbot/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MoradBot API - Cloudflare Workers backend",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint .",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@moradbot/shared": "workspace:*",
+    "@moradbot/ai-orchestrator": "workspace:*",
+    "@moradbot/salla-client": "workspace:*",
+    "hono": "^4.6.14",
+    "@hono/zod-validator": "^0.4.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "wrangler": "^3.94.0",
+    "typescript": "^5.7.2"
+  }
+}

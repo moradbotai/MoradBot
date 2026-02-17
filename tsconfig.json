@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./apps/api" },
+    { "path": "./apps/widget" },
+    { "path": "./apps/dashboard" },
+    { "path": "./packages/shared" },
+    { "path": "./packages/ai-orchestrator" },
+    { "path": "./packages/salla-client" }
+  ]
+}

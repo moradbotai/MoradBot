@@ -1,0 +1,11 @@
+name = "moradbot-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+# Development
+# [env.development]
+# vars = { ENVIRONMENT = "development" }
+
+# Production
+# [env.production]
+# vars = { ENVIRONMENT = "production" }
