@@ -21,7 +21,7 @@
 | Testing | Vitest + Playwright |
 | Linting | Biome |
 
-## 🚫 قواعد لا تُخترق (6 قواعد)
+## 🚫 قواعد لا تُخترق (8 قواعد)
 
 ### القاعدة 1 — نطاق MVP محدود للغاية
 أي ميزة غير موجودة في docs/morad_bot_product_requirements_document_prd_v_1.md
@@ -118,3 +118,26 @@ moradbot/
 
 ## 🔄 دورة التطوير القياسية
 ultra-think → code → test → security-scan → document → commit
+### القاعدة 7 — تنظيم الوثائق  
+**جميع الوثائق التي ينشئها Claude تذهب إلى `docs/claude/` فقط.**
+
+- ✅ `docs/claude/` - كل ما ينشئه Claude
+- ✅ `docs/claude/plans/` - خطط التنفيذ (phase-XX_اسم.md)
+- ❌ `docs/` - الوثائق الأصلية فقط (لا تُمس، لا تُعدّل)
+
+**الوثائق الأصلية في `docs/` محمية:**
+- `morad_bot_system_requirements_document_srd_v_1.md`
+- `morad_bot_product_requirements_document_prd_v_1.md`
+- `morad_bot_extended_architecture_document_v_1.md`
+- وجميع المستندات الأخرى
+
+### القاعدة 8 — خطط التنفيذ
+كل مرحلة تطوير لها ملف خطة خاص في `docs/claude/plans/`.
+
+**تنسيق الاسم:** `phase-XX_اسم_المرحلة.md`
+
+**مثال:**
+- `docs/claude/plans/phase-01_environment.md`
+- `docs/claude/plans/phase-02_database.md`
+- `docs/claude/plans/phase-03_api_foundation.md`
+
