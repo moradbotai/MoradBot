@@ -82,6 +82,7 @@ moradbot/
 2. `docs/morad_bot_product_requirements_document_prd_v_1.md`
 3. `docs/morad_bot_extended_architecture_document_v_1.md`
 4. `Open_source_projects/adk-samples-main/typescript/agents/customer_service`
+5. `docs/claude/salla_api_reference.md` — مرجع Salla API (OAuth, Products, Errors, Rate Limits)
 
 ## ⚡ أوامر الجلسة
 
