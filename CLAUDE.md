@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Identity
 
-**MoradBot** — B2B SaaS, AI-powered FAQ automation for Saudi Salla merchants.
+**مراد بوت** — B2B SaaS, AI-powered FAQ automation for Saudi Salla merchants.
+**المؤسسة:** مؤسسة محمد إبراهيم الجهني
 **Audience:** Merchants with 30–300 orders/month.
 **Language:** Arabic only in the Chat Widget (Rule 5).
 **Date:** February 2026.
@@ -122,7 +123,7 @@ moradbot/
 │   └── salla-client/    # Salla API client + OAuth (Phase 4 — scaffold)
 ├── supabase/
 │   └── migrations/   # 5 migration files (schema + RLS)
-├── docs_v2/          # Corrected v2 docs (MVP-only requirements + marketing + cost reference)
+├── docs_v2/          # الوثائق الرسمية المعتمدة للمشروع (المرجع الأول دائماً)
 ├── .claude_archive/   # Archived content (NOT deleted — move back when needed)
 │   ├── original_docs/ # Original v1 docs (protected, read-only)
 │   ├── future/        # agents/, commands/, skills/, mcp_servers.json
@@ -237,7 +238,7 @@ pnpm add -D @cloudflare/next-on-pages --filter @moradbot/dashboard
 ## Non-Negotiable Rules
 
 ### Rule 1 — MVP Scope
-Any feature not in `docs_v2/prd_v2.md` (or `.claude_archive/original_docs/morad_bot_product_requirements_document_prd_v_1.md`) is rejected immediately.
+Any feature not in `docs_v2/product_requirements.md` (or `.claude_archive/original_docs/morad_bot_product_requirements_document_prd_v_1.md`) is rejected immediately.
 **Banned from MVP:** order tracking, WhatsApp, English language, advanced analytics, file uploads, proactive messages.
 
 ### Rule 2 — Salla Read-Only
@@ -262,7 +263,7 @@ Bot always responds in Arabic, even if the visitor writes in English.
 No CI/CD auto-deploy to production. Every deploy goes through a manual Pre-Deploy Checklist.
 
 ### Rule 7 — Docs Organization
-All Claude-generated docs → `docs/claude/` only. Original v1 docs are in `.claude_archive/original_docs/` (protected, read-only). v2 docs are in `docs_v2/` (authoritative).
+All Claude-generated docs → `docs/claude/` only. Original v1 docs are in `.claude_archive/original_docs/` (protected, read-only). `docs_v2/` هو المجلد الرسمي الأول للوثائق المعتمدة — يُرجع إليه دائماً قبل أي مرجع آخر.
 
 ### Rule 8 — Phase Plans
 Each development phase gets a plan file in `docs/claude/plans/phase-XX_name.md`.
@@ -380,17 +381,20 @@ Reorganized Feb 18, 2026. Full audit: `docs/claude/tools_report_v2.md`.
 
 ## Knowledge Sources (Priority Order)
 
-> **v2 documents** (corrected, MVP-only) are in `docs_v2/` at the project root.
-> **Original documents** (protected, do not modify) remain in `docs/`.
+> **`docs_v2/`** هو المجلد الرسمي الوحيد للوثائق المعتمدة — يُرجع إليه أولاً في أي قرار.
+> **Original documents** (محفوظة للأرشيف فقط) → `.claude_archive/original_docs/`
 
-1. `docs_v2/srd_v2.md` — System Requirements (v2: AI provider added, multi-store clarified, rate limiting mechanism specified)
-2. `docs_v2/prd_v2.md` — Product Requirements (v2: widget error states, consent flow, AI disclosure added)
-3. `docs_v2/extended_architecture_v2.md` — Architecture Decisions (v2: Premium naming, CORS, Worker timeout)
-4. `docs_v2/marketing_strategy_moradbot.md` — Pricing tiers (97/197/497 SAR), free trial design, marketing strategy (v3.0, Feb 27 2026)
-5. `docs_v2/tools_and_costs.md` — Infrastructure costs, tech tools, break-even analysis (Feb 27 2026)
-6. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
-7. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
-8. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
+1. `docs_v2/system_requirements.md` — متطلبات النظام (AI provider، rate limiting، multi-store)
+2. `docs_v2/product_requirements.md` — متطلبات المنتج (widget states، consent flow، AI disclosure)
+3. `docs_v2/architecture.md` — قرارات المعمارية (CORS، Worker timeout، naming)
+4. `docs_v2/marketing_strategy.md` — الباقات (97/197/449 SAR)، التجربة المجانية، الاستراتيجية التسويقية (v3.0، فبراير 2026)
+5. `docs_v2/infrastructure_and_costs.md` — تكاليف البنية التحتية، التقنيات، نقطة التعادل (فبراير 2026)
+6. `docs_v2/implementation_plan.md` — خطة التنفيذ والمراحل
+7. `docs_v2/business_requirements.md` — متطلبات الأعمال، KPIs، نموذج الإيرادات
+8. `docs_v2/market_requirements.md` — تحليل السوق، ICP، محفزات الشراء
+9. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
+10. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
+11. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
 
 ---
 

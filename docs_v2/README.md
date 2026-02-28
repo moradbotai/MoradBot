@@ -1,13 +1,13 @@
-# MoradBot — دليل التوثيق
-النسخة: 2.0
-الحالة: Draft
-مرتبطة بـ MVP فقط
+# مراد بوت — دليل التوثيق
+**المؤسسة:** مؤسسة محمد إبراهيم الجهني
+**الإصدار:** 2.0
+**الحالة:** معتمد
 تاريخ الإنشاء: فبراير 2026
 
 ---
 
 ## الهدف
-دليل ملاحة مرجعي لجميع وثائق مشروع MoradBot — الوثائق الأصلية المحمية في `docs/` والوثائق المحدَّثة في `docs/claude/v2/`.
+دليل ملاحة مرجعي لجميع وثائق مشروع مراد بوت — الوثائق الأصلية المحمية في `docs/` والوثائق المحدَّثة في `docs/claude/v2/`.
 
 ## النطاق
 ✅ يغطي:
@@ -61,7 +61,7 @@
 ### docs/claude/v2/ — الوثائق المحدَّثة (النسخة الثانية)
 | الملف | يعدّل | ما الجديد |
 |-------|-------|-----------|
-| `extended_architecture_v2.md` | `docs/morad_bot_extended_architecture_document_v_1.md` | قيم Rate Limiting، إزالة Multi-Agent، Premium بدل Higher، RPO/RTO، Worker timeout، CORS |
+| `extended_architecture_v2.md` | `docs/morad_bot_extended_architecture_document_v_1.md` | قيم Rate Limiting، إزالة Multi-Agent، المتمكّن بدل Higher، RPO/RTO، Worker timeout، CORS |
 | `readme_v2.md` | `docs/readme_morad_bot_documentation.md` | هذا الملف نفسه |
 
 ---
@@ -121,13 +121,3 @@
 - جميع وثائق Claude تذهب إلى `docs/claude/` فقط (Rule 7)
 - الوثائق الأصلية في `docs/` محمية ولا تُعدَّل
 - النسخ v2 تعيش في `docs/claude/v2/` ولا تحل محل الأصليات
-
-## ما تم حذفه من النسخة الأصلية
-- **الرموز التعبيرية (Emojis):** حُذفت من الهيكل والعناوين
-- **عبارة "Current Phase: MVP":** استُبدلت بجدول المراحل التفصيلي الذي يعكس الحالة الفعلية (Phases 1-3 مكتملة)
-- **قسم Versioning العام:** استُعيض عنه بجدول المراحل الفعلي
-- **الإشارة إلى `01_Tools_Report.md` القديم:** أُضيفت ملاحظة الأرشفة مع الإشارة إلى الملف الحالي
-
-## التحقق من الالتزام بـMVP
-هل تحتوي هذه الوثيقة على أي ميزة غير موجودة في Confirmed MVP Scope؟
-الإجابة: لا.

@@ -1,12 +1,12 @@
-# خطة تنفيذ MoradBot
-النسخة: 2.0
-الحالة: Draft
-مرتبطة بـ MVP فقط
+# مراد بوت — خطة التنفيذ
+**المؤسسة:** مؤسسة محمد إبراهيم الجهني
+**الإصدار:** 2.0
+**الحالة:** معتمد
 
 ---
 
 ## الهدف
-خارطة طريق تنفيذية كاملة لبناء MoradBot من الصفر حتى Production، مرحلةً بمرحلة، مع معايير اكتمال قابلة للتحقق.
+خارطة طريق تنفيذية كاملة لبناء مراد بوت من الصفر حتى Production، مرحلةً بمرحلة، مع معايير اكتمال قابلة للتحقق.
 
 ## النطاق
 ✅ يغطي:
@@ -207,9 +207,9 @@ packages/salla-client/src/
 
 | الباقة | التكرار | Cron |
 |--------|---------|------|
-| Basic | كل 24 ساعة | `0 2 * * *` |
-| Mid-tier | كل 6 ساعات | `0 */6 * * *` |
-| Higher | كل ساعة | `0 * * * *` |
+| الانطلاق | كل 24 ساعة | `0 2 * * *` |
+| النمو | كل 6 ساعات | `0 */6 * * *` |
+| المتمكّن | كل ساعة | `0 * * * *` |
 
 - Rate limiting state مُخزَّن في Cloudflare KV
 - Batch processing: 100 منتج/request
@@ -236,9 +236,8 @@ packages/salla-client/src/
 ### AI Orchestrator (`packages/ai-orchestrator`)
 
 **OpenRouter Integration:**
-- Primary: Gemini 2.0 Flash (سرعة + تكلفة منخفضة)
-- Fallback 1: GPT-4 Mini
-- Fallback 2: Claude 3.5 Sonnet
+- Primary: google/gemini-2.0-flash (سرعة + تكلفة منخفضة)
+- Fallback: GPT-4o Mini
 - Timeout: 8 ثوان | Retry: 2 محاولات
 
 **قيود AI:**
@@ -271,7 +270,7 @@ packages/salla-client/src/
 - [ ] Widget < 50KB gzipped
 - [ ] لا يظهر على Checkout
 - [ ] Consent flow مُطبَّق
-- [ ] Fallback Models تعملان
+- [ ] Fallback Model يعمل
 - [ ] جميع الـ 7 حالات تعمل
 
 ---
@@ -485,16 +484,3 @@ cd apps/dashboard && pnpm deploy
 - CLAUDE.md واحد في الجذر (لا per-app CLAUDE.md)
 - Vitest للاختبارات (يُثبَّت في Phase 8 — غير مثبت حالياً)
 - `compatibility_date = "2025-11-01"` و `compatibility_flags = ["nodejs_compat"]` — ✅ مُطبَّق (فبراير 2026)
-
-## ما تم حذفه من النسخة الأصلية
-- **Phase 0 كاملاً** — أمر تثبيت 975 مكوّناً أصبح OBSOLETE بعد مراجعة الأدوات
-- **Widget = Vanilla TypeScript** — تم التصحيح إلى Preact + Vite
-- **Dashboard = React + Vite** — تم التصحيح إلى Next.js 15 App Router
-- **10 جداول في Phase 2** — تم التصحيح إلى 12 جدولاً
-- **Phase 3 الأصلية (Salla OAuth)** — أصبحت Phase 4 بعد إضافة Phase 3 الفعلية (API Foundation)
-- **ملاحظات الأدوات المتقادمة** (dx-optimizer، sql-pro، frontend-developer، إلخ)
-- **إشعارات Telegram للمشغّل** — استُبدلت بـ Resend في Phase 7
-
-## التحقق من الالتزام بـMVP
-هل تحتوي هذه الوثيقة على أي ميزة غير موجودة في Confirmed MVP Scope؟
-الإجابة: لا.
