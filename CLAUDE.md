@@ -19,7 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | ----------- | ------------ | ------- |
 | API Runtime | Cloudflare Workers (TypeScript) + Hono | Hono 4.11.9 / Wrangler 3.114.17 |
 | Database/Auth | Supabase (PostgreSQL + RLS) | supabase-js 2.48.x |
-| AI Provider | OpenRouter → Gemini 2.0 Flash (fallbacks: GPT-4 Mini, Claude 3.5 Sonnet) | — |
+| AI Provider | OpenRouter → Gemini 2.0 Flash (paid) / gemini-2.0-flash-exp:free (free tier) → fallback: GPT-4o Mini | — |
 | Chat Widget | Preact + Vite → bundled JS (<50KB gzipped) | Preact 10.28.3 / Vite 6.4.1 |
 | Dashboard | Next.js 15 (App Router) + Cloudflare Pages | Next.js 15.5.12 / React 19.2.4 |
 | Package Manager | pnpm + Turborepo | pnpm 8.15.0 / Turborepo 2.8.9 |
@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Testing | Vitest + Playwright (Phase 8 — not yet installed) | — |
 | Rate Limiting | Cloudflare KV | — |
 | Encryption | AES-256-GCM via Web Crypto API (built-in Workers) | — |
-| Email | Resend (Phase 5) | — |
+| Email | Resend (Phase 7) | — |
 
 > Full compatibility review: `docs/claude/technology_compatibility_review.md`
 
@@ -82,8 +82,10 @@ wrangler secret put SALLA_REDIRECT_URI
 # Phase 4 (before Salla OAuth deploy)
 wrangler secret put ENCRYPTION_KEY          # openssl rand -hex 32
 
-# Phase 5 (before AI + email features)
+# Phase 5 (before AI features)
 wrangler secret put OPENROUTER_API_KEY
+
+# Phase 7 (before email notifications)
 wrangler secret put RESEND_API_KEY
 wrangler secret put RESEND_FROM_EMAIL
 ```
