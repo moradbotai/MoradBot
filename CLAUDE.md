@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Audience:** Merchants with 30–300 orders/month.
 **Language:** Arabic only in the Chat Widget (Rule 5).
 **Date:** February 2026.
+**GitHub:** `https://github.com/moradbotai/Morad_Bot` (private)
 
 ---
 
@@ -236,7 +237,7 @@ pnpm add -D @cloudflare/next-on-pages --filter @moradbot/dashboard
 ## Non-Negotiable Rules
 
 ### Rule 1 — MVP Scope
-Any feature not in `docs/morad_bot_product_requirements_document_prd_v_1.md` is rejected immediately.
+Any feature not in `docs_v2/prd_v2.md` (or `.claude_archive/original_docs/morad_bot_product_requirements_document_prd_v_1.md`) is rejected immediately.
 **Banned from MVP:** order tracking, WhatsApp, English language, advanced analytics, file uploads, proactive messages.
 
 ### Rule 2 — Salla Read-Only
@@ -261,7 +262,7 @@ Bot always responds in Arabic, even if the visitor writes in English.
 No CI/CD auto-deploy to production. Every deploy goes through a manual Pre-Deploy Checklist.
 
 ### Rule 7 — Docs Organization
-All Claude-generated docs → `docs/claude/` only. Original docs in `docs/` are protected and must not be modified.
+All Claude-generated docs → `docs/claude/` only. Original v1 docs are in `.claude_archive/original_docs/` (protected, read-only). v2 docs are in `docs_v2/` (authoritative).
 
 ### Rule 8 — Phase Plans
 Each development phase gets a plan file in `docs/claude/plans/phase-XX_name.md`.
@@ -371,7 +372,7 @@ Reorganized Feb 18, 2026. Full audit: `docs/claude/tools_report_v2.md`.
 - **Agents (9 active):** backend-architect, typescript-pro, database-optimizer, security-auditor, ai-engineer, error-detective, api-documenter, prompt-engineer, technical-writer — archived: `.claude_archive/future/agents/` (11) + `not_useful/agents/` (12)
 - **Commands (16 active):** prime, resume, ultra-think, session-learning-capture, update-docs, code-review, debug-error, write-tests, test-coverage, security-audit, optimize-api-performance, optimize-database-performance, + 4 supabase — archived: `.claude_archive/future/commands/` (16) + `not_useful/commands/` (3)
 - **Skills (4 active):** prompt-architect, vercel-react-best-practices, vercel-composition-patterns, skill-creator — archived: `.claude_archive/future/skills/` (3) + `not_useful/skills/` (2)
-- **MCP Servers (5 active):** context7, supabase, memory, firecrawl-mcp, fetch — archived: `.claude_archive/future/mcp_servers.json` (6) + `not_useful/mcp_servers.json` (11)
+- **MCP Servers (6 active):** context7, supabase, memory, firecrawl-mcp, fetch, **github** (added Feb 28 2026) — archived: `.claude_archive/future/mcp_servers.json` (6) + `not_useful/mcp_servers.json` (11)
 
 **Skills Note:** `.claude/skills/` entries are symlinks → `.agents/skills/`. Moving a skill dir from `.agents/skills/` requires removing the broken symlink from `.claude/skills/`.
 
@@ -389,6 +390,7 @@ Reorganized Feb 18, 2026. Full audit: `docs/claude/tools_report_v2.md`.
 5. `docs_v2/tools_and_costs.md` — Infrastructure costs, tech tools, break-even analysis (Feb 27 2026)
 6. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
 7. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
+8. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
 
 ---
 
