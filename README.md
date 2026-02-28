@@ -6,9 +6,17 @@ MoradBot is a B2B SaaS platform that provides 24/7 Arabic FAQ automation for Sau
 
 ## Project Status
 
-**Phase:** MVP Development
-**Version:** 0.1.0
-**Target Market:** Saudi Salla merchants (10-500 orders/month)
+**Phase:** Phase 4 (Salla Client) — starting
+**Version:** 0.3.0
+**Target Market:** Saudi Salla merchants (30-300 orders/month)
+
+| Phase | Status | Description |
+| ----- | ------ | ----------- |
+| Phase 1 | ✅ Complete | Dev environment, Turborepo, Biome, base packages |
+| Phase 2 | ✅ Complete | 12-table DB schema, 5 migrations, RLS policies, TypeScript types |
+| Phase 3 | ✅ Complete | Hono API: 16 endpoints, middleware stack, error hierarchy, Supabase clients |
+| Phase 4 | 🔜 Next | Salla Client Package (OAuth + `GET /products`) |
+| Phase 5+ | ⏳ Pending | AI Orchestrator, Widget UI, Dashboard UI |
 
 ## Tech Stack
 
@@ -109,16 +117,17 @@ pnpm dev
 
 ## Documentation
 
-Comprehensive product documentation is available in the `docs/` folder:
+Comprehensive product documentation is available in the `docs_v2/` folder (corrected, MVP-only):
 
-- **MRD** - Market Requirements Document
-- **BRD** - Business Requirements Document
-- **PRD** - Product Requirements Document
-- **SRD** - System Requirements Document
-- **NFR** - Non-Functional Requirements
-- **Extended Architecture** - Operational decisions
+- **MRD** (`mrd_v2.md`) - Market Requirements Document
+- **BRD** (`brd_v2.md`) - Business Requirements Document
+- **PRD** (`prd_v2.md`) - Product Requirements Document
+- **SRD** (`srd_v2.md`) - System Requirements Document
+- **Extended Architecture** (`extended_architecture_v2.md`) - Operational decisions
+- **Marketing Strategy** (`marketing_strategy_moradbot.md`) - Pricing tiers, go-to-market plan
+- **Tools & Costs** (`tools_and_costs.md`) - Infrastructure costs and break-even analysis
 
-See `docs/readme_morad_bot_documentation.md` for the complete documentation structure.
+Claude-generated session docs and phase plans: `docs/claude/`
 
 ## Development
 

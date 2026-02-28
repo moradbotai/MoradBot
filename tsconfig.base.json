@@ -29,11 +29,8 @@
     "lib": ["ES2022"],
     "useDefineForClassFields": true,
 
-    // Emit
+    // Emit — overridden per-package as needed
     "noEmit": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
 
     // Skip Lib Check
     "skipLibCheck": true

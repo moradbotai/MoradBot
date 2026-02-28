@@ -1,20 +1,48 @@
 name = "moradbot-api"
 main = "src/index.ts"
-compatibility_date = "2024-02-17"
-node_compat = true
+compatibility_date = "2025-11-01"
+compatibility_flags = ["nodejs_compat"]
 
+# ──────────────────────────────────────────────────────────────
+# Non-secret vars (safe to commit)
+# ──────────────────────────────────────────────────────────────
 [vars]
 ENVIRONMENT = "development"
+OPENROUTER_MODEL_PRIMARY = "google/gemini-2.0-flash"
+OPENROUTER_MODEL_FREE_TIER = "google/gemini-2.0-flash-exp:free"
+OPENROUTER_MODEL_FALLBACK_1 = "openai/gpt-4o-mini"
+RATE_LIMIT_VISITOR_PER_MIN = "20"
+RATE_LIMIT_STORE_PER_HOUR = "3000"
 
-# Secrets must be set using: wrangler secret put <KEY>
-# Required secrets:
-#   - SUPABASE_URL
-#   - SUPABASE_ANON_KEY
-#   - SUPABASE_SERVICE_ROLE_KEY
-#   - SALLA_CLIENT_ID
-#   - SALLA_CLIENT_SECRET
-#   - SALLA_REDIRECT_URI
+# ──────────────────────────────────────────────────────────────
+# KV Namespace — Rate Limiting (Phase 4)
+# Create with: wrangler kv namespace create RATE_LIMIT_KV
+#              wrangler kv namespace create RATE_LIMIT_KV --preview
+# Then replace the placeholder IDs below.
+# ──────────────────────────────────────────────────────────────
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
 
-# Production environment
+# ──────────────────────────────────────────────────────────────
+# Secrets — set via: wrangler secret put <KEY>
+# Rule 4: Never store secrets in code, DB, or .env in production
+# ──────────────────────────────────────────────────────────────
+# Required before first deploy:
+#   wrangler secret put SUPABASE_URL
+#   wrangler secret put SUPABASE_ANON_KEY
+#   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+#   wrangler secret put SALLA_CLIENT_ID
+#   wrangler secret put SALLA_CLIENT_SECRET
+#   wrangler secret put SALLA_REDIRECT_URI
+#   wrangler secret put ENCRYPTION_KEY      ← Phase 4 (openssl rand -hex 32)
+#   wrangler secret put OPENROUTER_API_KEY  ← Phase 5
+#   wrangler secret put RESEND_API_KEY      ← Phase 5
+#   wrangler secret put RESEND_FROM_EMAIL   ← Phase 5
+
+# ──────────────────────────────────────────────────────────────
+# Production environment overrides
+# ──────────────────────────────────────────────────────────────
 [env.production]
 vars = { ENVIRONMENT = "production" }
