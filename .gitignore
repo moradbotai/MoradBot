@@ -67,3 +67,6 @@ Thumbs.db
 # Open source projects (not part of MoradBot)
 open_source_projects/
 .firecrawl/
+
+# MCP Server config (contains API keys — use .mcp.json.example as template)
+.mcp.json
