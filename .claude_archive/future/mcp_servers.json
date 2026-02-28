@@ -1,0 +1,45 @@
+{
+  "_comment": "MCP servers to activate in future phases. Move entries back to .mcp.json when ready.",
+  "_phases": {
+    "playwright-server": "Phase 5 - Widget E2E testing",
+    "github": "Phase 5+ - CI/CD integration (requires real GITHUB_PERSONAL_ACCESS_TOKEN)",
+    "postgresql": "Phase 2 reference only - use supabase MCP instead (requires real connection string)",
+    "TestSprite": "Phase 5+ - Visual testing (requires real API_KEY)",
+    "mcp-mermaid": "Available now but not critical - architecture diagrams",
+    "postgres-documentation": "Reference tool for PostgreSQL docs"
+  },
+  "mcpServers": {
+    "playwright-server": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+      }
+    },
+    "TestSprite": {
+      "command": "npx",
+      "args": ["@testsprite/testsprite-mcp@latest"],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    },
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": ["-y", "mcp-mermaid"]
+    },
+    "postgres-documentation": {
+      "url": "https://mcp.tigerdata.com/docs"
+    }
+  }
+}

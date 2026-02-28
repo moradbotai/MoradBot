@@ -1,3 +1,14 @@
+> ⚠️ **PARTIAL REFERENCE** — تعكس هذه الخطة ما قبل التنفيذ. راجع الملاحظات أدناه قبل الاستخدام.
+>
+> **الانحرافات الرئيسية:**
+> - **Phase 0 (Tooling):** OBSOLETE — راجع `docs/claude/tools_report_v2.md`
+> - **Phase 1 (Environment):** مكتملة — مع Biome بدلاً من ESLint+Prettier
+> - **Phase 2 (DB):** مكتملة — 12 جدولاً لا 10، migration naming مختلف
+> - **Phase 3 في هذه الخطة = Phase 4 الفعلية** (Salla OAuth)
+> - **Phase 3 الفعلية (API Foundation):** 16 endpoint، Hono v4 — **غائبة من هذه الخطة كلياً**
+> - **Widget:** Preact + Vite (لا Vanilla TypeScript)
+> - **Dashboard:** Next.js 15 App Router (لا React + Vite)
+
 # 🗺️ خطة تنفيذ MoradBot — Claude Code Implementation Plan
 **الإصدار:** 1.0.0 | **التاريخ:** فبراير 2026 | **المدة الإجمالية:** 40 يوم عمل
 

@@ -1,0 +1,72 @@
+{
+  "_comment": "MCP servers archived as not useful for MoradBot. Reasons documented per server.",
+  "_reasons": {
+    "executeautomation-playwright-server": "DUPLICATE - playwright-server (official @playwright/mcp) is preferred",
+    "puppeteer": "DUPLICATE - firecrawl-mcp handles all web automation better",
+    "browser-server": "BLOCKED - requires OPENAI_API_KEY, conflicts with our OpenRouter setup",
+    "mcp-server-box": "PLACEHOLDER - path '/path/to/mcp-server-box' never configured",
+    "filesystem": "PLACEHOLDER - path '/path/to/allowed/files' never configured; Claude Code has native file access",
+    "markitdown": "BLOCKED - requires Docker; firecrawl-mcp handles document conversion better",
+    "chrome-devtools": "NO USE CASE - MoradBot is a backend API + widget, no Chrome DevTools needed in development",
+    "imagesorcery-mcp": "NO USE CASE - MoradBot has no image manipulation requirements",
+    "DeepGraph Next.js MCP": "NICHE - deep code graph for Next.js source; not needed for consuming Next.js",
+    "DeepGraph React MCP": "NICHE - deep code graph for React source; not needed for using React",
+    "DeepGraph TypeScript MCP": "NICHE - deep code graph for TypeScript source; not needed for writing TypeScript"
+  },
+  "mcpServers": {
+    "executeautomation-playwright-server": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "puppeteer": {
+      "command": "puppeteer-mcp-server",
+      "args": [],
+      "env": {}
+    },
+    "browser-server": {
+      "command": "browser-use-mcp-server",
+      "args": ["run", "server", "--port", "8000", "--stdio", "--proxy-port", "9000"],
+      "env": {
+        "OPENAI_API_KEY": "your-api-key"
+      }
+    },
+    "mcp-server-box": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/mcp-server-box", "run", "src/mcp_server_box.py"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/files"]
+    },
+    "markitdown": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "markitdown-mcp:latest"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "imagesorcery-mcp": {
+      "command": "imagesorcery-mcp",
+      "transportType": "stdio",
+      "autoApprove": [
+        "blur", "change_color", "config", "crop", "detect", "draw_arrows",
+        "draw_circles", "draw_lines", "draw_rectangles", "draw_texts",
+        "fill", "find", "get_metainfo", "ocr", "overlay", "resize", "rotate"
+      ],
+      "timeout": 100
+    },
+    "DeepGraph Next.js MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "vercel/next.js"]
+    },
+    "DeepGraph React MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "facebook/react"]
+    },
+    "DeepGraph TypeScript MCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-code-graph@latest", "microsoft/TypeScript"]
+    }
+  }
+}
