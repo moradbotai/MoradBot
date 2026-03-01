@@ -1,55 +1,13 @@
 /**
  * مراد بوت — CSS Design Tokens
- * الإصدار: 1.1 | Light Mode
+ * الإصدار: 1.2 | Light Mode
  * التاريخ: 2026-03-01
  *
  * الاستخدام:
+ *   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
  *   @import 'variables.css';
  *   button { background: var(--color-primary); }
  */
-
-/* ============================================================
-   FONT FACE — TheYearofHandicrafts
-   ============================================================ */
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
 
@@ -100,22 +58,15 @@
   /* ============================================================
      COLORS — SEMANTIC
      ============================================================ */
-  /* Success */
   --color-success-light: #D1FAE5;
   --color-success:       #10B981;
   --color-success-dark:  #059669;
-
-  /* Warning */
   --color-warning-light: #FEF3C7;
   --color-warning:       #F59E0B;
   --color-warning-dark:  #D97706;
-
-  /* Error */
   --color-error-light:   #FEE2E2;
   --color-error:         #EF4444;
   --color-error-dark:    #DC2626;
-
-  /* Info */
   --color-info-light:    #DBEAFE;
   --color-info:          #60A5FA;
   --color-info-dark:     #2281F8;
@@ -164,8 +115,7 @@
   /* ============================================================
      TYPOGRAPHY
      ============================================================ */
-  /* Font Family */
-  --font-primary: 'TheYearofHandicrafts', 'Tajawal', system-ui, sans-serif;
+  --font-primary: 'IBM Plex Sans Arabic', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
 
   /* Font Sizes */
@@ -187,7 +137,6 @@
   --weight-medium:   500;
   --weight-semibold: 600;
   --weight-bold:     700;
-  --weight-black:    900;
 
   /* Line Heights */
   --leading-tight:   1.25;
@@ -247,18 +196,13 @@
   /* ============================================================
      COMPONENT SIZES
      ============================================================ */
-  /* Buttons */
   --btn-height-sm: 32px;
   --btn-height-md: 40px;
   --btn-height-lg: 48px;
   --btn-height-xl: 56px;
-
-  /* Inputs */
   --input-height-sm: 32px;
   --input-height-md: 40px;
   --input-height-lg: 48px;
-
-  /* Layout */
   --sidebar-width:  280px;
   --widget-width:   380px;
   --content-max:    1440px;

@@ -1,70 +1,23 @@
 # نظام الخطوط — مراد بوت
-**الإصدار:** 1.1 | **الاتجاه:** RTL (عربي أولاً) | **التاريخ:** 2026-03-01
+**الإصدار:** 1.2 | **الاتجاه:** RTL (عربي أولاً) | **التاريخ:** 2026-03-01
 
 ---
 
 ## الخط الرسمي المعتمد
 
-**TheYearofHandicrafts** — خط عربي رسمي للمشروع.
+**IBM Plex Sans Arabic** — خط عربي مفتوح المصدر من IBM، متوفر عبر Google Fonts.
 
-### المسار
-```
-assets/brand/fonts/Arabic_font/
-├── WOFF2/
-│   ├── TheYearofHandicrafts-Black.woff2
-│   ├── TheYearofHandicrafts-Bold.woff2
-│   ├── TheYearofHandicrafts-Medium.woff2
-│   ├── TheYearofHandicrafts-Regular.woff2
-│   └── TheYearofHandicrafts-SemiBold.woff2
-└── (OTF — للتصميم فقط)
-    ├── TheYearofHandicrafts-Black.otf
-    ├── TheYearofHandicrafts-Bold.otf
-    ├── TheYearofHandicrafts-Medium.otf
-    ├── TheYearofHandicrafts-Regular.otf
-    └── TheYearofHandicrafts-SemiBold.otf
+### التحميل عبر Google Fonts
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
 ```
 
-### تعريف الـ @font-face في CSS
+أو عبر CSS:
 ```css
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TheYearofHandicrafts';
-  src: url('/fonts/TheYearofHandicrafts-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap');
 ```
 
 ---
@@ -72,11 +25,25 @@ assets/brand/fonts/Arabic_font/
 ## خطوط النظام (Fallback)
 
 ```css
---font-primary: 'TheYearofHandicrafts', 'Tajawal', system-ui, sans-serif;
+--font-primary: 'IBM Plex Sans Arabic', system-ui, sans-serif;
 --font-mono:    'JetBrains Mono', 'Courier New', monospace;
 ```
 
-> **ملاحظة:** TheYearofHandicrafts يُستخدم لجميع النصوص العربية (العناوين والجسم). JetBrains Mono للكود فقط.
+> **ملاحظة:** IBM Plex Sans Arabic يُستخدم لجميع النصوص العربية (العناوين والجسم). JetBrains Mono للكود فقط.
+
+---
+
+## أوزان الخطوط المتاحة
+
+| Weight | القيمة | الاستخدام |
+|--------|--------|-----------|
+| Thin | 100 | — |
+| ExtraLight | 200 | — |
+| Light | 300 | — |
+| **Regular** | **400** | **النص العادي، الجسم** |
+| **Medium** | **500** | **تمييز خفيف** |
+| **SemiBold** | **600** | **العناوين الفرعية، Labels** |
+| **Bold** | **700** | **العناوين الرئيسية** |
 
 ---
 
@@ -99,42 +66,16 @@ assets/brand/fonts/Arabic_font/
 
 ---
 
-## أوزان الخطوط
-
-| Token | Weight | الاستخدام |
-|-------|--------|-----------|
-| `weight-regular` | 400 | النص العادي، الجسم |
-| `weight-medium` | 500 | تمييز خفيف |
-| `weight-semibold` | 600 | العناوين الفرعية، الـ labels |
-| `weight-bold` | 700 | العناوين الرئيسية |
-| `weight-black` | 900 | Display text، أرقام Hero |
-
----
-
-## ارتفاع السطر (Line Height)
-
-| Token | القيمة | الاستخدام |
-|-------|--------|-----------|
-| `leading-tight` | 1.25 | العناوين الكبيرة |
-| `leading-snug` | 1.35 | العناوين الفرعية |
-| `leading-normal` | 1.5 | النص العادي |
-| `leading-relaxed` | 1.65 | نص طويل، مقالات |
-| `leading-loose` | 1.75 | نص صغير، captions |
-
-> **ملاحظة للعربية:** استخدم `leading-relaxed` (1.65) كحد أدنى للنص العربي لضمان وضوح الحركات والتشكيل.
-
----
-
 ## التسلسل الهرمي للنصوص
 
 ```
-Display (48px, Black 900, #020617)   → Hero sections
-H1      (36px, Bold 700,  #020617)   → عنوان الصفحة
-H2      (28px, SemiBold 600, #1E293B) → أقسام رئيسية
-H3      (22px, SemiBold 600, #1E293B) → عناوين البطاقات
-H4      (18px, Medium 500,  #1E293B) → عناوين فرعية
-body    (16px, Regular 400, #1E293B) → المحتوى
-caption (12px, Regular 400, #475569) → نصوص مساعدة
+Display (48px, Bold 700,    #020617)    → Hero sections
+H1      (36px, Bold 700,    #020617)    → عنوان الصفحة
+H2      (28px, SemiBold 600, #1E293B)   → أقسام رئيسية
+H3      (22px, SemiBold 600, #1E293B)   → عناوين البطاقات
+H4      (18px, Medium 500,   #1E293B)   → عناوين فرعية
+body    (16px, Regular 400,  #1E293B)   → المحتوى
+caption (12px, Regular 400,  #475569)   → نصوص مساعدة
 ```
 
 ---
@@ -144,5 +85,5 @@ caption (12px, Regular 400, #475569) → نصوص مساعدة
 1. **لا تستخدم أكثر من 3 أحجام** خطوط في صفحة واحدة
 2. **overline labels:** uppercase + letter-spacing: 0.5px دائماً
 3. **النصوص العربية:** `text-align: right` دائماً
-4. **الأرقام الإحصائية:** `direction: ltr` للوضوح (أرقام إنجليزية فقط)
+4. **الأرقام الإحصائية:** إنجليزية دائماً مع `direction: ltr`
 5. **لا تستخدم Italic** في النصوص العربية
