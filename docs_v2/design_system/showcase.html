@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مراد بوت — نظام الهوية البصرية</title>
+  <style>
+    @font-face {
+      font-family: 'TheYearofHandicrafts';
+      src: url('../../../assets/brand/fonts/Arabic_font/WOFF2/TheYearofHandicrafts-Regular.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TheYearofHandicrafts';
+      src: url('../../../assets/brand/fonts/Arabic_font/WOFF2/TheYearofHandicrafts-Medium.woff2') format('woff2');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TheYearofHandicrafts';
+      src: url('../../../assets/brand/fonts/Arabic_font/WOFF2/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TheYearofHandicrafts';
+      src: url('../../../assets/brand/fonts/Arabic_font/WOFF2/TheYearofHandicrafts-Bold.woff2') format('woff2');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TheYearofHandicrafts';
+      src: url('../../../assets/brand/fonts/Arabic_font/WOFF2/TheYearofHandicrafts-Black.woff2') format('woff2');
+      font-weight: 900; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --color-primary-50:  #EFF6FF; --color-primary-100: #DBEAFE; --color-primary-200: #BFDBFE;
+      --color-primary-300: #93C5FD; --color-primary-400: #60A5FA; --color-primary-500: #2281F8;
+      --color-primary-600: #1A6FD4; --color-primary-700: #155CB0; --color-primary-800: #104A8C;
+      --color-primary-900: #0C3868;
+      --color-secondary-50:  #F5F0FD; --color-secondary-100: #EDE0FB; --color-secondary-200: #D9C0F7;
+      --color-secondary-300: #C49BF1; --color-secondary-400: #B071E8; --color-secondary-500: #9B51E0;
+      --color-secondary-600: #7E3CB8; --color-secondary-700: #632E91; --color-secondary-800: #4A226C;
+      --color-secondary-900: #321748;
+      --color-neutral-50:    #F8FAFC; --color-neutral-100: #F1F5F9; --color-neutral-200: #E2E8F0;
+      --color-neutral-300:   #CBD5E1; --color-neutral-400: #94A3B8; --color-neutral-500: #64748B;
+      --color-neutral-600:   #475569; --color-neutral-700: #334155; --color-neutral-800: #1E293B;
+      --color-neutral-900:   #0F172A; --color-neutral-black: #020617; --color-neutral-white: #FFFFFF;
+      --color-success-light: #D1FAE5; --color-success: #10B981; --color-success-dark: #059669;
+      --color-warning-light: #FEF3C7; --color-warning: #F59E0B; --color-warning-dark: #D97706;
+      --color-error-light:   #FEE2E2; --color-error: #EF4444; --color-error-dark: #DC2626;
+      --surface-page:    #F1F5F9; --surface-card:    #FFFFFF; --surface-sidebar: #FFFFFF;
+      --surface-hover:   #E2E8F0; --surface-active:  #020617;
+      --text-primary:    #1E293B; --text-secondary:  #475569; --text-disabled: #94A3B8;
+      --text-heading:    #020617; --text-on-dark:    #FFFFFF; --text-link: #2281F8;
+      --border-default:  #E2E8F0; --border-input: #CBD5E1; --border-focus: #2281F8; --border-error: #EF4444;
+      --font-primary: 'TheYearofHandicrafts', 'Tajawal', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05); --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+      --radius-2xl: 24px; --radius-full: 9999px;
+      --duration-normal: 200ms; --ease-default: ease-in-out;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-primary); background: var(--surface-page); color: var(--text-primary); line-height: 1.65; direction: rtl; }
+
+    .showcase-header { background: var(--surface-active); color: var(--text-on-dark); padding: 48px 64px; }
+    .showcase-header h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 8px; }
+    .showcase-header p { font-size: 1rem; color: rgba(255,255,255,0.6); }
+
+    .showcase-nav { background: var(--surface-card); border-bottom: 1px solid var(--border-default); padding: 0 64px; display: flex; gap: 4px; position: sticky; top: 0; z-index: 100; }
+    .showcase-nav a { display: inline-block; padding: 14px 14px; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; border-bottom: 2px solid transparent; transition: all var(--duration-normal); }
+    .showcase-nav a:hover { color: var(--color-primary-500); border-bottom-color: var(--color-primary-500); }
+
+    .showcase-main { max-width: 1200px; margin: 0 auto; padding: 64px; }
+    .section { margin-bottom: 80px; }
+    .section-title { font-size: 1.375rem; font-weight: 700; color: var(--text-heading); padding-bottom: 16px; border-bottom: 2px solid var(--border-default); margin-bottom: 8px; }
+    .section-desc { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 32px; }
+
+    /* Color Swatches */
+    .color-group { margin-bottom: 32px; }
+    .color-group-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 12px; }
+    .color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 80px; }
+    .swatch-box { width: 80px; height: 56px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.06); box-shadow: var(--shadow-sm); }
+    .swatch-label { font-size: 10px; color: var(--text-secondary); text-align: center; font-family: var(--font-mono); line-height: 1.3; }
+    .semantic-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .semantic-card { border-radius: var(--radius-lg); padding: 20px; min-width: 160px; flex: 1; }
+    .semantic-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .semantic-hex { font-family: var(--font-mono); font-size: 13px; }
+
+    /* Typography */
+    .type-specimens { display: flex; flex-direction: column; gap: 16px; }
+    .type-specimen { display: flex; align-items: baseline; gap: 24px; padding: 20px 24px; background: var(--surface-card); border-radius: var(--radius-lg); border: 1px solid var(--border-default); }
+    .type-meta { min-width: 120px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono); line-height: 1.4; flex-shrink: 0; }
+
+    /* Buttons */
+    .btn-grid { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 0 20px; height: 40px; border-radius: var(--radius-md); font-family: var(--font-primary); font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; transition: all var(--duration-normal) var(--ease-default); }
+    .btn-primary { background: var(--color-primary-500); color: #FFFFFF; }
+    .btn-primary:hover { background: var(--color-primary-600); }
+    .btn-secondary { background: transparent; color: var(--color-primary-500); border: 1.5px solid var(--color-primary-500); }
+    .btn-secondary:hover { background: var(--color-primary-50); }
+    .btn-ghost { background: transparent; color: var(--text-primary); }
+    .btn-ghost:hover { background: var(--surface-hover); }
+    .btn-danger { background: var(--color-error); color: #FFFFFF; }
+    .btn-danger:hover { background: var(--color-error-dark); }
+    .btn-disabled { background: var(--color-neutral-300); color: var(--color-neutral-400); cursor: not-allowed; }
+    .btn-sm { height: 32px; padding: 0 12px; font-size: 0.8125rem; }
+    .btn-lg { height: 48px; padding: 0 28px; font-size: 1rem; }
+    .btn-xl { height: 56px; padding: 0 32px; font-size: 1.125rem; border-radius: var(--radius-lg); }
+
+    /* Badges */
+    .badges-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; }
+    .badge-blue   { background: var(--color-primary-100); color: var(--color-primary-700); }
+    .badge-purple { background: var(--color-secondary-100); color: var(--color-secondary-700); }
+    .badge-green  { background: var(--color-success-light); color: var(--color-success-dark); }
+    .badge-amber  { background: var(--color-warning-light); color: var(--color-warning-dark); }
+    .badge-red    { background: var(--color-error-light); color: var(--color-error-dark); }
+    .badge-gray   { background: var(--color-neutral-200); color: var(--color-neutral-600); }
+
+    /* Inputs */
+    .input-grid { display: flex; flex-direction: column; gap: 20px; max-width: 480px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+    .field input { height: 40px; padding: 0 16px; border: 1px solid var(--border-input); border-radius: var(--radius-md); font-family: var(--font-primary); font-size: 0.875rem; color: var(--text-primary); background: var(--surface-card); transition: border-color var(--duration-normal); outline: none; width: 100%; }
+    .field input:focus { border: 2px solid var(--border-focus); box-shadow: 0 0 0 3px rgba(34,129,248,0.12); }
+    .field input.error { border-color: var(--border-error); }
+    .helper { font-size: 0.75rem; color: var(--text-secondary); }
+    .field-error { font-size: 0.75rem; color: var(--color-error); }
+
+    /* Cards */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .card { background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-md); }
+    .stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--text-heading); line-height: 1; direction: ltr; text-align: left; }
+    .stat-change { font-size: 0.8125rem; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .stat-change.up { color: var(--color-success-dark); }
+    .stat-change.down { color: var(--color-error-dark); }
+
+    /* Usage Bar */
+    .usage-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .usage-title { font-size: 0.875rem; font-weight: 600; }
+    .usage-percent { font-size: 0.875rem; font-weight: 700; direction: ltr; }
+    .usage-bar-track { height: 8px; background: var(--color-neutral-200); border-radius: var(--radius-full); overflow: hidden; margin-bottom: 8px; }
+    .usage-bar-fill { height: 100%; border-radius: var(--radius-full); }
+    .usage-bar-fill.green { background: var(--color-success); }
+    .usage-bar-fill.amber { background: var(--color-warning); }
+    .usage-bar-fill.red   { background: var(--color-error); }
+    .usage-sub { font-size: 0.75rem; color: var(--text-secondary); direction: ltr; text-align: left; }
+
+    /* Nav Preview */
+    .nav-preview { background: var(--surface-sidebar); border: 1px solid var(--border-default); border-radius: var(--radius-lg); width: 280px; padding: 16px; box-shadow: var(--shadow-sm); }
+    .nav-brand { padding: 8px 12px 20px; font-size: 1.125rem; font-weight: 700; color: var(--text-heading); border-bottom: 1px solid var(--border-default); margin-bottom: 8px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all var(--duration-normal); margin-bottom: 2px; }
+    .nav-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+    .nav-item.active { background: var(--surface-active); color: #FFFFFF; }
+
+    /* Widget */
+    .widget-preview { width: 380px; background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
+    .widget-header { background: var(--color-primary-500); color: #FFFFFF; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+    .widget-avatar { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .widget-title { font-size: 0.9375rem; font-weight: 700; }
+    .widget-status { font-size: 0.75rem; opacity: 0.8; }
+    .widget-messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--surface-page); min-height: 200px; }
+    .msg { max-width: 80%; display: flex; flex-direction: column; gap: 4px; }
+    .msg-bot { align-self: flex-start; }
+    .msg-user { align-self: flex-end; }
+    .msg-bubble { padding: 10px 14px; border-radius: var(--radius-lg); font-size: 0.875rem; line-height: 1.5; }
+    .msg-bot .msg-bubble { background: var(--surface-card); color: var(--text-primary); border: 1px solid var(--border-default); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 2px; }
+    .msg-user .msg-bubble { background: var(--color-primary-500); color: #FFFFFF; border-radius: var(--radius-lg) var(--radius-lg) 2px var(--radius-lg); }
+    .ai-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--color-primary-50); color: var(--color-primary-600); border-radius: var(--radius-full); padding: 2px 8px; font-size: 0.6875rem; font-weight: 600; margin-bottom: 4px; border: 1px solid var(--color-primary-200); }
+    .widget-input-bar { padding: 12px 16px; border-top: 1px solid var(--border-default); display: flex; gap: 8px; align-items: center; }
+    .widget-input { flex: 1; height: 36px; border: 1px solid var(--border-input); border-radius: var(--radius-full); padding: 0 14px; font-family: var(--font-primary); font-size: 0.8125rem; outline: none; background: var(--surface-page); }
+    .widget-send { width: 36px; height: 36px; background: var(--color-primary-500); color: #FFFFFF; border: none; border-radius: var(--radius-full); cursor: pointer; font-size: 14px; }
+
+    /* Spacing */
+    .spacing-grid { display: flex; flex-direction: column; gap: 8px; }
+    .spacing-row { display: flex; align-items: center; gap: 16px; }
+    .spacing-label { font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-secondary); min-width: 100px; direction: ltr; }
+    .spacing-bar { background: var(--color-primary-200); height: 20px; border-radius: 3px; }
+    .spacing-value { font-size: 0.6875rem; color: var(--text-secondary); font-family: var(--font-mono); }
+
+    /* Radius */
+    .radius-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+    .radius-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .radius-demo { width: 64px; height: 64px; background: var(--color-primary-100); border: 2px solid var(--color-primary-300); }
+    .radius-label { font-size: 0.6875rem; color: var(--text-secondary); font-family: var(--font-mono); text-align: center; }
+
+    .divider { height: 1px; background: var(--border-default); margin: 24px 0; }
+  </style>
+</head>
+<body>
+
+  <header class="showcase-header">
+    <h1>مراد بوت — نظام الهوية البصرية</h1>
+    <p>الإصدار 1.1 | Light Mode | خط TheYearofHandicrafts | Cool Slate Neutrals</p>
+  </header>
+
+  <nav class="showcase-nav">
+    <a href="#colors">الألوان</a>
+    <a href="#typography">الخطوط</a>
+    <a href="#buttons">الأزرار</a>
+    <a href="#badges">Badges</a>
+    <a href="#inputs">الحقول</a>
+    <a href="#cards">البطاقات</a>
+    <a href="#nav">التنقل</a>
+    <a href="#widget">Widget</a>
+    <a href="#spacing">المسافات</a>
+    <a href="#radius">الزوايا</a>
+  </nav>
+
+  <main class="showcase-main">
+
+    <!-- COLORS -->
+    <section class="section" id="colors">
+      <h2 class="section-title">1. نظام الألوان</h2>
+      <p class="section-desc">Primary #2281F8 وSecondary #9B51E0 ثابتان رسمياً. النظام المحايد "Cool Slate" يتناسق مع الأزرق الرئيسي.</p>
+
+      <div class="color-group">
+        <div class="color-group-title">Primary — الأزرق الرسمي #2281F8</div>
+        <div class="color-row">
+          <div class="swatch"><div class="swatch-box" style="background:#EFF6FF"></div><div class="swatch-label">50<br>#EFF6FF</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#DBEAFE"></div><div class="swatch-label">100<br>#DBEAFE</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#BFDBFE"></div><div class="swatch-label">200<br>#BFDBFE</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#93C5FD"></div><div class="swatch-label">300<br>#93C5FD</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#60A5FA"></div><div class="swatch-label">400<br>#60A5FA</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#2281F8; outline: 3px solid #2281F8; outline-offset: 2px;"></div><div class="swatch-label" style="font-weight:700;color:#2281F8">500 BASE<br>#2281F8</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#1A6FD4"></div><div class="swatch-label">600<br>#1A6FD4</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#155CB0"></div><div class="swatch-label">700<br>#155CB0</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#104A8C"></div><div class="swatch-label">800<br>#104A8C</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#0C3868"></div><div class="swatch-label">900<br>#0C3868</div></div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Secondary — البنفسجي الرسمي #9B51E0</div>
+        <div class="color-row">
+          <div class="swatch"><div class="swatch-box" style="background:#F5F0FD"></div><div class="swatch-label">50<br>#F5F0FD</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#EDE0FB"></div><div class="swatch-label">100<br>#EDE0FB</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#D9C0F7"></div><div class="swatch-label">200<br>#D9C0F7</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#C49BF1"></div><div class="swatch-label">300<br>#C49BF1</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#B071E8"></div><div class="swatch-label">400<br>#B071E8</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#9B51E0; outline: 3px solid #9B51E0; outline-offset: 2px;"></div><div class="swatch-label" style="font-weight:700;color:#9B51E0">500 BASE<br>#9B51E0</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#7E3CB8"></div><div class="swatch-label">600<br>#7E3CB8</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#632E91"></div><div class="swatch-label">700<br>#632E91</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#4A226C"></div><div class="swatch-label">800<br>#4A226C</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#321748"></div><div class="swatch-label">900<br>#321748</div></div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Neutral — Cool Slate</div>
+        <div class="color-row">
+          <div class="swatch"><div class="swatch-box" style="background:#F8FAFC"></div><div class="swatch-label">50<br>#F8FAFC</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#F1F5F9; outline: 2px dashed #94A3B8; outline-offset: 2px;"></div><div class="swatch-label" style="font-weight:700">100 Page<br>#F1F5F9</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#E2E8F0"></div><div class="swatch-label">200<br>#E2E8F0</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#CBD5E1"></div><div class="swatch-label">300<br>#CBD5E1</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#94A3B8"></div><div class="swatch-label">400<br>#94A3B8</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#64748B"></div><div class="swatch-label">500<br>#64748B</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#475569"></div><div class="swatch-label" style="font-weight:700">600 2nd<br>#475569</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#334155"></div><div class="swatch-label">700<br>#334155</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#1E293B"></div><div class="swatch-label" style="font-weight:700">800 Text<br>#1E293B</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#0F172A"></div><div class="swatch-label">900<br>#0F172A</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#020617"></div><div class="swatch-label" style="font-weight:700">Black<br>#020617</div></div>
+          <div class="swatch"><div class="swatch-box" style="background:#FFFFFF; border:1px solid #CBD5E1;"></div><div class="swatch-label">White<br>#FFFFFF</div></div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Semantic Colors</div>
+        <div class="semantic-row">
+          <div class="semantic-card" style="background:#D1FAE5"><div class="semantic-title" style="color:#059669">Success</div><div class="semantic-hex" style="color:#059669">#10B981</div></div>
+          <div class="semantic-card" style="background:#FEF3C7"><div class="semantic-title" style="color:#D97706">Warning</div><div class="semantic-hex" style="color:#D97706">#F59E0B</div></div>
+          <div class="semantic-card" style="background:#FEE2E2"><div class="semantic-title" style="color:#DC2626">Error</div><div class="semantic-hex" style="color:#DC2626">#EF4444</div></div>
+          <div class="semantic-card" style="background:#DBEAFE"><div class="semantic-title" style="color:#1A6FD4">Info</div><div class="semantic-hex" style="color:#1A6FD4">#60A5FA</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section class="section" id="typography">
+      <h2 class="section-title">2. نظام الخطوط — TheYearofHandicrafts</h2>
+      <p class="section-desc">خط عربي رسمي بـ 5 أوزان (Regular 400 → Black 900). الأرقام في الإحصائيات إنجليزية دائماً مع direction: ltr.</p>
+
+      <div class="type-specimens">
+        <div class="type-specimen">
+          <div class="type-meta">Display<br>48px / Black 900</div>
+          <div style="font-size:3rem;font-weight:900;color:var(--text-heading);line-height:1.25">مراد بوت</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">H1<br>36px / Bold 700</div>
+          <div style="font-size:2.25rem;font-weight:700;color:var(--text-heading);line-height:1.25">لوحة التحكم الرئيسية</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">H2<br>28px / SemiBold 600</div>
+          <div style="font-size:1.75rem;font-weight:600;color:var(--text-primary);line-height:1.35">إحصائيات الأداء الشهرية</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">H3<br>22px / SemiBold 600</div>
+          <div style="font-size:1.375rem;font-weight:600;color:var(--text-primary);line-height:1.35">معدل الردود الآلية</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">Body<br>16px / Regular 400</div>
+          <div style="font-size:1rem;font-weight:400;color:var(--text-primary);line-height:1.65">يساعد مراد بوت التجار السعوديين في الإجابة على أسئلة العملاء تلقائياً وبشكل فوري دون الحاجة لتدخل بشري.</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">Caption<br>12px / Regular 400</div>
+          <div style="font-size:0.75rem;font-weight:400;color:var(--text-secondary);line-height:1.75">نص مساعد يظهر تحت الحقول والعناصر الثانوية في النماذج</div>
+        </div>
+        <div class="type-specimen">
+          <div class="type-meta">Stat Number<br>32px / Bold 700<br>English + LTR</div>
+          <div style="font-size:2rem;font-weight:700;color:var(--text-heading);direction:ltr;text-align:left;line-height:1;font-family:var(--font-mono)">1,284</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="section" id="buttons">
+      <h2 class="section-title">3. الأزرار</h2>
+      <p class="section-desc">Primary واحد فقط في أي view. الأيمن = Primary، الأيسر = Secondary في RTL.</p>
+
+      <div class="btn-grid" style="margin-bottom:24px">
+        <button class="btn btn-primary">زر رئيسي</button>
+        <button class="btn btn-secondary">زر ثانوي</button>
+        <button class="btn btn-ghost">زر خفيف</button>
+        <button class="btn btn-danger">حذف</button>
+        <button class="btn btn-disabled" disabled>معطل</button>
+      </div>
+
+      <div class="divider"></div>
+      <div class="color-group-title" style="margin-bottom:12px">أحجام الأزرار</div>
+      <div class="btn-grid">
+        <button class="btn btn-primary btn-sm">صغير 32px</button>
+        <button class="btn btn-primary">متوسط 40px</button>
+        <button class="btn btn-primary btn-lg">كبير 48px</button>
+        <button class="btn btn-primary btn-xl">كبير جداً 56px</button>
+      </div>
+    </section>
+
+    <!-- BADGES -->
+    <section class="section" id="badges">
+      <h2 class="section-title">4. Badges والـ Tags</h2>
+      <p class="section-desc">للحالات والتصنيفات — ليس للزينة.</p>
+      <div class="badges-row">
+        <span class="badge badge-blue">نشط</span>
+        <span class="badge badge-purple">AI</span>
+        <span class="badge badge-green">مكتمل</span>
+        <span class="badge badge-amber">قيد الانتظار</span>
+        <span class="badge badge-red">ملغي</span>
+        <span class="badge badge-gray">مسودة</span>
+        <span class="badge" style="background:var(--color-primary-50);color:var(--color-primary-600);border:1px solid var(--color-primary-200)">مساعد ذكاء اصطناعي</span>
+      </div>
+    </section>
+
+    <!-- INPUTS -->
+    <section class="section" id="inputs">
+      <h2 class="section-title">5. حقول الإدخال</h2>
+      <p class="section-desc">Label فوق الحقل دائماً. Focus = 2px solid #2281F8. Error = أحمر.</p>
+      <div class="input-grid">
+        <div class="field">
+          <label>اسم المتجر</label>
+          <input type="text" placeholder="مثال: متجر النور">
+          <span class="helper">اسم متجرك في منصة سلة</span>
+        </div>
+        <div class="field">
+          <label>البريد الإلكتروني</label>
+          <input type="email" value="merchant@store.com">
+        </div>
+        <div class="field">
+          <label>رمز الاستجابة</label>
+          <input type="text" class="error" value="invalid-key-123">
+          <span class="field-error">الرمز غير صحيح، يرجى المراجعة</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section class="section" id="cards">
+      <h2 class="section-title">6. البطاقات</h2>
+      <p class="section-desc">الأرقام الإحصائية: إنجليزية دائماً مع direction: ltr. Usage bar: أخضر/برتقالي/أحمر.</p>
+
+      <div class="cards-grid" style="margin-bottom:24px">
+        <div class="card">
+          <div class="stat-label">إجمالي الردود</div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-change up"><span>↑</span> 12% هذا الأسبوع</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">التصعيدات</div>
+          <div class="stat-value">23</div>
+          <div class="stat-change down"><span>↓</span> 5% عن الأسبوع الماضي</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">معدل الحل التلقائي</div>
+          <div class="stat-value">89%</div>
+          <div class="stat-change up"><span>↑</span> 3% تحسن</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">متوسط وقت الرد</div>
+          <div class="stat-value">1.2s</div>
+          <div class="stat-change up"><span>↑</span> أداء مثالي</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card">
+          <div class="usage-header"><span class="usage-title">Starter — 1,000 رد/شهر</span><span class="usage-percent" style="color:var(--color-success)">65%</span></div>
+          <div class="usage-bar-track"><div class="usage-bar-fill green" style="width:65%"></div></div>
+          <div class="usage-sub">650 / 1,000</div>
+        </div>
+        <div class="card">
+          <div class="usage-header"><span class="usage-title">Growth — 3,000 رد/شهر</span><span class="usage-percent" style="color:var(--color-warning)">85%</span></div>
+          <div class="usage-bar-track"><div class="usage-bar-fill amber" style="width:85%"></div></div>
+          <div class="usage-sub">2,550 / 3,000 — تقترب من الحد</div>
+        </div>
+        <div class="card">
+          <div class="usage-header"><span class="usage-title">Starter — وصلت الحد</span><span class="usage-percent" style="color:var(--color-error)">100%</span></div>
+          <div class="usage-bar-track"><div class="usage-bar-fill red" style="width:100%"></div></div>
+          <div class="usage-sub">1,000 / 1,000 — تم إيقاف البوت</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <section class="section" id="nav">
+      <h2 class="section-title">7. Sidebar Navigation</h2>
+      <p class="section-desc">Active pill = #020617 أسود. Hover = #E2E8F0. Icon + نص، 280px عرضاً.</p>
+      <div class="nav-preview">
+        <div class="nav-brand">مراد بوت</div>
+        <div class="nav-item active">⊞ الرئيسية</div>
+        <div class="nav-item">💬 المحادثات</div>
+        <div class="nav-item">⚠ التصعيدات <span class="badge badge-red" style="margin-right:auto">3</span></div>
+        <div class="nav-item">⚙ الإعدادات</div>
+      </div>
+    </section>
+
+    <!-- WIDGET -->
+    <section class="section" id="widget">
+      <h2 class="section-title">8. Chat Widget</h2>
+      <p class="section-desc">عرض 380px. أول رسالة = AI Disclosure badge. المستخدم يمين أزرق. البوت يسار رمادي.</p>
+      <div class="widget-preview">
+        <div class="widget-header">
+          <div class="widget-avatar">🤖</div>
+          <div>
+            <div class="widget-title">مساعد متجرك</div>
+            <div class="widget-status">● متاح الآن</div>
+          </div>
+          <div style="margin-right:auto;font-size:18px;cursor:pointer;opacity:0.7">✕</div>
+        </div>
+        <div class="widget-messages">
+          <div class="msg msg-bot">
+            <div class="ai-badge">🤖 مساعد ذكاء اصطناعي</div>
+            <div class="msg-bubble">مرحباً! أنا المساعد الآلي لمتجرك. كيف يمكنني مساعدتك؟</div>
+          </div>
+          <div class="msg msg-user">
+            <div class="msg-bubble">ما هي سياسة الإرجاع؟</div>
+          </div>
+          <div class="msg msg-bot">
+            <div class="msg-bubble">يمكنك إرجاع أي منتج خلال 7 أيام من الاستلام بحالته الأصلية.</div>
+          </div>
+        </div>
+        <div class="widget-input-bar">
+          <button class="widget-send">↑</button>
+          <input class="widget-input" type="text" placeholder="اكتب رسالتك...">
+        </div>
+      </div>
+    </section>
+
+    <!-- SPACING -->
+    <section class="section" id="spacing">
+      <h2 class="section-title">9. مقياس المسافات</h2>
+      <p class="section-desc">Base unit: 4px. جميع المسافات مضاعفات 4.</p>
+      <div class="spacing-grid">
+        <div class="spacing-row"><span class="spacing-label">space-1 / 4px</span><div class="spacing-bar" style="width:4px"></div><span class="spacing-value">icon gap</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-2 / 8px</span><div class="spacing-bar" style="width:8px"></div><span class="spacing-value">badge padding</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-3 / 12px</span><div class="spacing-bar" style="width:12px"></div><span class="spacing-value">nav item</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-4 / 16px</span><div class="spacing-bar" style="width:16px"></div><span class="spacing-value">base unit</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-6 / 24px</span><div class="spacing-bar" style="width:24px"></div><span class="spacing-value">card padding</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-8 / 32px</span><div class="spacing-bar" style="width:32px"></div><span class="spacing-value">section gap</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-10 / 40px</span><div class="spacing-bar" style="width:40px"></div><span class="spacing-value">page margin</span></div>
+        <div class="spacing-row"><span class="spacing-label">space-16 / 64px</span><div class="spacing-bar" style="width:64px"></div><span class="spacing-value">desktop padding</span></div>
+      </div>
+    </section>
+
+    <!-- RADIUS -->
+    <section class="section" id="radius">
+      <h2 class="section-title">10. Border Radius</h2>
+      <p class="section-desc">Cards: 12px. Buttons: 8px. Avatars/Chips: full (9999px).</p>
+      <div class="radius-row">
+        <div class="radius-box"><div class="radius-demo" style="border-radius:0"></div><div class="radius-label">none<br>0px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:4px"></div><div class="radius-label">sm<br>4px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:8px"></div><div class="radius-label">md<br>8px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:12px"></div><div class="radius-label">lg<br>12px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:16px"></div><div class="radius-label">xl<br>16px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:24px"></div><div class="radius-label">2xl<br>24px</div></div>
+        <div class="radius-box"><div class="radius-demo" style="border-radius:9999px"></div><div class="radius-label">full<br>9999px</div></div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

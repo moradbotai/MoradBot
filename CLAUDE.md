@@ -126,6 +126,7 @@ moradbot/
 ├── supabase/
 │   └── migrations/   # 5 migration files (schema + RLS)
 ├── docs_v2/          # الوثائق الرسمية المعتمدة للمشروع (المرجع الأول دائماً)
+│   └── design_system/ # نظام الهوية البصرية (الألوان، الخطوط، الـ tokens، showcase)
 ├── .claude_archive/   # Archived content (NOT deleted — move back when needed)
 │   ├── original_docs/ # Original v1 docs (protected, read-only)
 │   ├── future/        # agents/, commands/, skills/, mcp_servers.json
@@ -394,9 +395,17 @@ Reorganized Feb 18, 2026. Full audit: `docs/claude/tools_report_v2.md`.
 6. `docs_v2/implementation_plan.md` — خطة التنفيذ والمراحل
 7. `docs_v2/business_requirements.md` — متطلبات الأعمال، KPIs، نموذج الإيرادات
 8. `docs_v2/market_requirements.md` — تحليل السوق، ICP، محفزات الشراء
-9. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
-10. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
-11. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
+9. `docs_v2/design_system/` — نظام الهوية البصرية الكامل (الألوان، الخطوط، التصميم، الـ tokens)
+   - `colors.md` — Primary #2281F8، Secondary #9B51E0، Cool Slate neutrals
+   - `typography.md` — خط TheYearofHandicrafts (5 أوزان)
+   - `design_rules.md` — 12 قاعدة تصميم
+   - `spacing.md` — مقياس المسافات والظلال والزوايا
+   - `tokens/variables.css` — CSS Custom Properties
+   - `tokens/tokens.json` — Design Tokens (W3C format)
+   - `showcase.html` — صفحة عرض بصري للهوية
+10. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
+11. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
+12. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
 
 ---
 

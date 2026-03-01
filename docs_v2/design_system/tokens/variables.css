@@ -1,0 +1,274 @@
+/**
+ * مراد بوت — CSS Design Tokens
+ * الإصدار: 1.1 | Light Mode
+ * التاريخ: 2026-03-01
+ *
+ * الاستخدام:
+ *   @import 'variables.css';
+ *   button { background: var(--color-primary); }
+ */
+
+/* ============================================================
+   FONT FACE — TheYearofHandicrafts
+   ============================================================ */
+@font-face {
+  font-family: 'TheYearofHandicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TheYearofHandicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TheYearofHandicrafts';
+  src: url('/fonts/TheYearofHandicrafts-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TheYearofHandicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TheYearofHandicrafts';
+  src: url('/fonts/TheYearofHandicrafts-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+
+  /* ============================================================
+     COLORS — PRIMARY (Blue #2281F8 — ثابت رسمياً)
+     ============================================================ */
+  --color-primary-50:  #EFF6FF;
+  --color-primary-100: #DBEAFE;
+  --color-primary-200: #BFDBFE;
+  --color-primary-300: #93C5FD;
+  --color-primary-400: #60A5FA;
+  --color-primary-500: #2281F8; /* BASE */
+  --color-primary-600: #1A6FD4;
+  --color-primary-700: #155CB0;
+  --color-primary-800: #104A8C;
+  --color-primary-900: #0C3868;
+
+  /* ============================================================
+     COLORS — SECONDARY (Purple #9B51E0 — ثابت رسمياً)
+     ============================================================ */
+  --color-secondary-50:  #F5F0FD;
+  --color-secondary-100: #EDE0FB;
+  --color-secondary-200: #D9C0F7;
+  --color-secondary-300: #C49BF1;
+  --color-secondary-400: #B071E8;
+  --color-secondary-500: #9B51E0; /* BASE */
+  --color-secondary-600: #7E3CB8;
+  --color-secondary-700: #632E91;
+  --color-secondary-800: #4A226C;
+  --color-secondary-900: #321748;
+
+  /* ============================================================
+     COLORS — NEUTRALS (Cool Slate — يتناسق مع الأزرق)
+     ============================================================ */
+  --color-neutral-50:    #F8FAFC;
+  --color-neutral-100:   #F1F5F9; /* Page Background */
+  --color-neutral-200:   #E2E8F0;
+  --color-neutral-300:   #CBD5E1;
+  --color-neutral-400:   #94A3B8;
+  --color-neutral-500:   #64748B;
+  --color-neutral-600:   #475569; /* Text Secondary */
+  --color-neutral-700:   #334155;
+  --color-neutral-800:   #1E293B; /* Text Primary */
+  --color-neutral-900:   #0F172A;
+  --color-neutral-black: #020617; /* Headings, Active Nav */
+  --color-neutral-white: #FFFFFF; /* Card surface */
+
+  /* ============================================================
+     COLORS — SEMANTIC
+     ============================================================ */
+  /* Success */
+  --color-success-light: #D1FAE5;
+  --color-success:       #10B981;
+  --color-success-dark:  #059669;
+
+  /* Warning */
+  --color-warning-light: #FEF3C7;
+  --color-warning:       #F59E0B;
+  --color-warning-dark:  #D97706;
+
+  /* Error */
+  --color-error-light:   #FEE2E2;
+  --color-error:         #EF4444;
+  --color-error-dark:    #DC2626;
+
+  /* Info */
+  --color-info-light:    #DBEAFE;
+  --color-info:          #60A5FA;
+  --color-info-dark:     #2281F8;
+
+  /* ============================================================
+     COLORS — SURFACE (Semantic Aliases)
+     ============================================================ */
+  --surface-page:    #F1F5F9; /* خلفية الصفحة */
+  --surface-card:    #FFFFFF; /* البطاقات */
+  --surface-sidebar: #FFFFFF; /* الشريط الجانبي */
+  --surface-input:   #FFFFFF; /* حقول الإدخال */
+  --surface-hover:   #E2E8F0; /* Hover على Nav items */
+  --surface-active:  #020617; /* Active Nav pill */
+
+  /* ============================================================
+     COLORS — TEXT (Semantic Aliases)
+     ============================================================ */
+  --text-primary:    #1E293B;
+  --text-secondary:  #475569;
+  --text-disabled:   #94A3B8;
+  --text-heading:    #020617;
+  --text-on-dark:    #FFFFFF;
+  --text-on-primary: #FFFFFF;
+  --text-link:       #2281F8;
+  --text-link-hover: #1A6FD4;
+
+  /* ============================================================
+     COLORS — BORDER
+     ============================================================ */
+  --border-default:  #E2E8F0;
+  --border-input:    #CBD5E1;
+  --border-focus:    #2281F8;
+  --border-error:    #EF4444;
+  --border-active:   #020617;
+
+  /* ============================================================
+     COLORS — DATA VISUALIZATION
+     ============================================================ */
+  --data-1: #2281F8;
+  --data-2: #9B51E0;
+  --data-3: #10B981;
+  --data-4: #F59E0B;
+  --data-5: #EF4444;
+  --data-neutral: #94A3B8;
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+  /* Font Family */
+  --font-primary: 'TheYearofHandicrafts', 'Tajawal', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* Font Sizes */
+  --text-display: 3rem;        /* 48px */
+  --text-h1:      2.25rem;     /* 36px */
+  --text-h2:      1.75rem;     /* 28px */
+  --text-h3:      1.375rem;    /* 22px */
+  --text-h4:      1.125rem;    /* 18px */
+  --text-h5:      1rem;        /* 16px */
+  --text-body-lg: 1.125rem;    /* 18px */
+  --text-body:    1rem;        /* 16px */
+  --text-body-sm: 0.875rem;    /* 14px */
+  --text-caption: 0.75rem;     /* 12px */
+  --text-overline:0.6875rem;   /* 11px */
+  --text-stat:    2rem;        /* 32px */
+
+  /* Font Weights */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-black:    900;
+
+  /* Line Heights */
+  --leading-tight:   1.25;
+  --leading-snug:    1.35;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.75;
+
+  /* ============================================================
+     SPACING
+     ============================================================ */
+  --space-0:  0px;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ============================================================
+     BORDER RADIUS
+     ============================================================ */
+  --radius-none: 0px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ============================================================
+     SHADOWS
+     ============================================================ */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.10);
+
+  /* ============================================================
+     TRANSITIONS
+     ============================================================ */
+  --duration-fast:   100ms;
+  --duration-normal: 200ms;
+  --duration-slow:   300ms;
+  --duration-slower: 500ms;
+  --ease-default:    ease-in-out;
+  --ease-out:        ease-out;
+
+  /* ============================================================
+     COMPONENT SIZES
+     ============================================================ */
+  /* Buttons */
+  --btn-height-sm: 32px;
+  --btn-height-md: 40px;
+  --btn-height-lg: 48px;
+  --btn-height-xl: 56px;
+
+  /* Inputs */
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+
+  /* Layout */
+  --sidebar-width:  280px;
+  --widget-width:   380px;
+  --content-max:    1440px;
+
+  /* Z-index Scale */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
