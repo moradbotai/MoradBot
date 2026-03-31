@@ -118,7 +118,8 @@ moradbot/
 ├── apps/
 │   ├── api/          # Cloudflare Worker — Hono backend
 │   ├── widget/       # Preact chat widget → bundled JS
-│   └── dashboard/    # Next.js 15 merchant admin panel (placeholder)
+│   ├── dashboard/    # Next.js 15 merchant admin panel (placeholder)
+│   └── landing/      # Public landing page (single HTML file + assets)
 ├── packages/
 │   ├── shared/       # Database TypeScript types (Database interface)
 │   ├── ai-orchestrator/  # OpenRouter integration (Phase 5 — scaffold)
@@ -201,9 +202,12 @@ All errors are caught by `errorHandler` middleware and returned as structured JS
 - Audit log required for all sensitive operations
 - Worker timeout: 30 seconds maximum
 
-### Database (Supabase — 5 migrations)
+### Database (Supabase — 6 migrations)
 
-12 tables: `plans`, `stores`, `subscriptions`, `faq_entries`, `product_snapshots`, `visitor_sessions`, `tickets`, `messages`, `escalations`, `audit_logs`, `usage_tracking`, `bot_configurations`.
+13 tables: `plans`, `stores`, `subscriptions`, `faq_entries`, `product_snapshots`, `visitor_sessions`, `tickets`, `messages`, `escalations`, `audit_logs`, `usage_tracking`, `bot_configurations`, `waitlist_submissions`.
+
+**New table (Mar 30 2026):**
+- `waitlist_submissions` — Captures landing page signups with email, store info, platform choice, and beta interest flag. RLS: public INSERT, service_role SELECT only. Fields: id, form_type, name, email, store_url, platform, store_size, phone, wants_beta (BOOLEAN), submitted_at, ip_hash (SHA256), created_at.
 
 **RLS Policy rule:** All tenant queries use `auth.uid() = store_id`. Every query in route handlers must include `.eq("store_id", storeId)`. Omitting this filter is a Rule 3 violation — see enforcement behavior under Rule 3.
 
@@ -379,6 +383,7 @@ End:   session-closer (auto-executes: learning-capture → update-docs → sync-
 | Phase 1 | ✅ Complete | Dev environment, Turborepo, Biome, base packages |
 | Phase 2 | ✅ Complete | 12-table DB schema, 5 migrations, RLS policies, TypeScript types |
 | Phase 3 | ✅ Complete | Hono API: 16 endpoints, middleware stack, error hierarchy, Supabase clients |
+| Phase 3.5 | ✅ Complete | Landing page (apps/landing/) with waitlist form + Supabase integration, brand assets, animations (Mar 30 2026) |
 | Phase 4 | 🔜 Next | Salla Client Package (OAuth + `GET /products`) |
 | Phase 5+ | ⏳ Pending | AI Orchestrator, Widget UI, Dashboard UI |
 
@@ -423,6 +428,7 @@ Reorganized Feb 18, 2026. Full audit: `docs/claude/tools_report_v2.md`.
 10. `docs/claude/ai-orchestrator-reference/` — نسخة مُكيَّفة من Google ADK Customer Service (original + adaptation README)
 11. `docs/claude/salla_api_reference.md` — Salla API: OAuth, Products, Errors, Rate Limits
 12. `docs/claude/github_integration.md` — GitHub workflow, branch strategy, commit convention, PR process
+13. `docs/claude/notion_design_philosophy.md` — Notion design system reference, applied to landing page (60-30-10 color ratio)
 
 ---
 
