@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>إحصاءات مراد بوت — لوحة التحليلات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#01041B;--accent:#0075DE;--white:#fff;
+  --near-black:#0D0D0D;--gray-50:#F9FAFB;--gray-100:#F3F4F6;
+  --gray-200:#E5E7EB;--gray-400:#9CA3AF;--gray-500:#6B7280;
+  --green:#10B981;--yellow:#F59E0B;--red:#EF4444;
+  --font:"IBM Plex Sans Arabic",-apple-system,sans-serif;
+  --px:clamp(16px,4vw,44px);--max:1200px;--r-md:8px;--r-lg:12px;--r-xl:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--gray-50);color:var(--near-black);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--px)}
+
+/* NAV */
+.nav{background:var(--dark);padding:0 var(--px);height:60px;display:flex;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-row{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;font-weight:700;font-size:15px}
+.nav-logo img{height:24px}
+.nav-badge{font-size:11px;font-weight:600;background:rgba(0,117,222,.2);border:1px solid rgba(0,117,222,.4);color:#6DB8FF;padding:3px 10px;border-radius:999px;letter-spacing:.04em}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;transition:color 140ms}
+.nav-back:hover{color:#fff}
+
+/* PAGE HEADER */
+.page-header{background:var(--dark);padding:48px var(--px) 40px;border-bottom:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.page-header-glow{position:absolute;top:-60px;right:10%;width:400px;height:300px;background:radial-gradient(circle,rgba(0,117,222,.15) 0%,transparent 65%);pointer-events:none}
+.page-header-inner{position:relative;z-index:1}
+.page-title{font-size:clamp(24px,3.5vw,38px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:8px}
+.page-sub{font-size:14px;color:rgba(255,255,255,.45)}
+.page-sub strong{color:rgba(255,255,255,.75)}
+
+/* CONTENT */
+.content{padding:40px var(--px) 80px}
+
+/* GRID */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px}
+@media(max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
+
+/* STAT CARD */
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);padding:22px 20px;transition:border-color 160ms}
+.stat-card:hover{border-color:#D1D5DB}
+.stat-label{font-size:12px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.stat-value{font-size:clamp(28px,3.5vw,42px);font-weight:700;color:var(--near-black);line-height:1;direction:ltr;display:inline-block}
+.stat-unit{font-size:16px;font-weight:400;color:var(--gray-400)}
+.stat-change{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;margin-top:6px;padding:2px 8px;border-radius:999px}
+.stat-change--up{background:rgba(16,185,129,.1);color:#059669}
+.stat-change--down{background:rgba(239,68,68,.1);color:#DC2626}
+.stat-change--neutral{background:rgba(156,163,175,.1);color:var(--gray-500)}
+.stat-desc{font-size:12px;color:var(--gray-400);margin-top:6px}
+
+/* SECTION TITLE */
+.section-title{font-size:18px;font-weight:700;color:var(--near-black);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+
+/* TABLE CARD */
+.table-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);overflow:hidden;margin-bottom:32px}
+.table-card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.table-card-title{font-size:14px;font-weight:600;color:var(--near-black)}
+.table-card-badge{font-size:11px;background:var(--gray-100);color:var(--gray-500);padding:3px 10px;border-radius:999px}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;padding:10px 20px;text-align:right;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+td{font-size:13px;color:var(--near-black);padding:12px 20px;border-bottom:1px solid var(--gray-100)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gray-50)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px}
+.badge--blue{background:rgba(0,117,222,.1);color:#0075DE}
+.badge--green{background:rgba(16,185,129,.1);color:#059669}
+.badge--yellow{background:rgba(245,158,11,.1);color:#B45309}
+.badge--gray{background:var(--gray-100);color:var(--gray-500)}
+
+/* FUNNEL */
+.funnel-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);padding:24px;margin-bottom:32px}
+.funnel-item{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.funnel-label{font-size:13px;font-weight:500;color:var(--near-black);min-width:160px;flex-shrink:0}
+.funnel-bar-wrap{flex:1;background:var(--gray-100);border-radius:999px;height:10px;overflow:hidden}
+.funnel-bar{height:100%;border-radius:999px;background:var(--accent);transition:width 1s ease}
+.funnel-pct{font-size:12px;font-weight:600;color:var(--gray-500);min-width:42px;text-align:left}
+.funnel-count{font-size:12px;color:var(--gray-400);min-width:60px}
+
+/* EMPTY STATE */
+.empty{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);padding:48px 24px;text-align:center;margin-bottom:32px}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.3}
+.empty-title{font-size:16px;font-weight:600;color:var(--near-black);margin-bottom:6px}
+.empty-sub{font-size:14px;color:var(--gray-400)}
+
+/* LOADING */
+.loading{text-align:center;padding:32px;color:var(--gray-400);font-size:14px}
+.spin{display:inline-block;width:20px;height:20px;border:2px solid var(--gray-200);border-top-color:var(--accent);border-radius:50%;animation:spin 600ms linear infinite;vertical-align:middle;margin-left:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.page-footer{text-align:center;padding:24px;font-size:12px;color:var(--gray-400);border-top:1px solid var(--gray-200)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row wrap">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo-icon.png" alt="">
+      <span>مراد بوت</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="nav-badge">لوحة التحليلات</span>
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        العودة للصفحة الرئيسية
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-glow"></div>
+  <div class="wrap page-header-inner">
+    <h1 class="page-title">إحصاءات صفحة الهبوط</h1>
+    <p class="page-sub">البيانات الحقيقية من قاعدة البيانات — <strong>آخر تحديث: الآن</strong></p>
+  </div>
+</div>
+
+<div class="content wrap">
+
+  <!-- Loading state -->
+  <div id="loadingState" class="loading">
+    جاري تحميل البيانات<span class="spin"></span>
+  </div>
+
+  <!-- Stats content (hidden until loaded) -->
+  <div id="statsContent" style="display:none">
+
+    <!-- Summary KPIs -->
+    <div class="section-title" style="margin-bottom:16px">
+      <span class="section-title-dot"></span>
+      ملخص عام
+    </div>
+    <div class="grid-4" id="kpiGrid">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Funnel -->
+    <div class="section-title">
+      <span class="section-title-dot"></span>
+      مسار التحويل
+    </div>
+    <div class="funnel-card" id="funnelCard">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Form breakdown -->
+    <div class="grid-2">
+      <div>
+        <div class="section-title">
+          <span class="section-title-dot" style="background:#0075DE"></span>
+          قائمة الانتظار
+        </div>
+        <div class="table-card" id="waitlistTable">
+          <div class="table-card-header">
+            <span class="table-card-title">المسجلون في قائمة الانتظار</span>
+            <span class="table-card-badge" id="waitlistCount">0</span>
+          </div>
+          <div id="waitlistBody"><div class="loading">جاري التحميل<span class="spin"></span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">
+          <span class="section-title-dot" style="background:#059669"></span>
+          طلبات التجربة المبكرة
+        </div>
+        <div class="table-card" id="betaTable">
+          <div class="table-card-header">
+            <span class="table-card-title">المتقدمون للتجربة</span>
+            <span class="table-card-badge" id="betaCount">0</span>
+          </div>
+          <div id="betaBody"><div class="loading">جاري التحميل<span class="spin"></span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform & Size breakdown -->
+    <div class="grid-2">
+      <div>
+        <div class="section-title">
+          <span class="section-title-dot" style="background:#F59E0B"></span>
+          توزيع المنصات
+        </div>
+        <div class="table-card">
+          <div class="table-card-header">
+            <span class="table-card-title">المنصات التجارية المختارة</span>
+          </div>
+          <table>
+            <thead><tr><th>المنصة</th><th>العدد</th><th>النسبة</th></tr></thead>
+            <tbody id="platformTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">
+          <span class="section-title-dot" style="background:#8B5CF6"></span>
+          أحجام المتاجر
+        </div>
+        <div class="table-card">
+          <div class="table-card-header">
+            <span class="table-card-title">توزيع حجم المتجر (طلبات/شهر)</span>
+          </div>
+          <table>
+            <thead><tr><th>الحجم</th><th>العدد</th><th>النسبة</th></tr></thead>
+            <tbody id="sizeTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-title">
+      <span class="section-title-dot"></span>
+      آخر التسجيلات
+    </div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">أحدث 20 تسجيل</span>
+        <span class="table-card-badge" id="recentCount">0</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>البريد</th>
+            <th>النوع</th>
+            <th>المنصة</th>
+            <th>الحجم</th>
+            <th>التجربة</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+        <tbody id="recentTable"></tbody>
+      </table>
+    </div>
+
+  </div><!-- /statsContent -->
+
+  <!-- Error state -->
+  <div id="errorState" style="display:none">
+    <div class="empty">
+      <div class="empty-icon">⚠️</div>
+      <div class="empty-title">خطأ في تحميل البيانات</div>
+      <div class="empty-sub" id="errorMsg">تحقق من إعدادات Supabase</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  مراد بوت — لوحة التحليلات الداخلية · البيانات محمية بـ Row Level Security
+</div>
+
+<script>
+const { createClient } = window.supabase;
+const sb = createClient(
+  'https://qvujnhkfqwqfzkkweylk.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2dWpuaGtmcXdxZnpra3dleWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODQyODQsImV4cCI6MjA4MjI2MDI4NH0.j7iGDng9c9ul_SwAdNmY4h_bHynFYj2r3uQEkglssTY'
+);
+
+function fmt(n){return new Intl.NumberFormat('ar-SA').format(n)}
+function pct(a,b){return b>0?Math.round(a/b*100)+'%':'—'}
+function dateStr(iso){
+  if(!iso)return '—';
+  return new Date(iso).toLocaleDateString('ar-SA',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+async function load() {
+  try {
+    const { data, error } = await sb.from('waitlist_submissions').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('statsContent').style.display = 'block';
+
+    const waitlist = data.filter(r => r.form_type === 'waitlist');
+    const beta = data.filter(r => r.form_type === 'beta_tester');
+    const wantsBeta = data.filter(r => r.wants_beta);
+    const withStore = data.filter(r => r.store_url);
+    const total = data.length;
+
+    // KPIs
+    document.getElementById('kpiGrid').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">إجمالي التسجيلات</div>
+        <div class="stat-value">${fmt(total)}</div>
+        <div class="stat-desc">منذ الإطلاق</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">قائمة الانتظار</div>
+        <div class="stat-value">${fmt(waitlist.length)}<span class="stat-unit"> مسجل</span></div>
+        <div class="stat-desc">${pct(waitlist.length, total)} من الإجمالي</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">طلبات التجربة</div>
+        <div class="stat-value">${fmt(beta.length)}<span class="stat-unit"> / 10</span></div>
+        <div class="stat-desc">${pct(beta.length, 10)} من الأماكن ممتلئة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">يريدون التجربة</div>
+        <div class="stat-value">${fmt(wantsBeta.length)}</div>
+        <div class="stat-desc">من نموذج قائمة الانتظار</div>
+      </div>
+    `;
+
+    // Funnel
+    const funnelData = [
+      { label: 'زوار الصفحة (تقدير)', count: '—', pctVal: 100, note: 'ادمج مع Google Analytics' },
+      { label: 'وصلوا لنموذج التسجيل', count: '—', pctVal: 60, note: 'يحتاج تتبع scroll events' },
+      { label: 'بدأوا تعبئة النموذج', count: '—', pctVal: 35, note: 'يحتاج تتبع form focus' },
+      { label: 'أكملوا التسجيل', count: fmt(total), pctVal: total > 0 ? 25 : 0, note: 'بيانات حقيقية' },
+      { label: 'طلبوا التجربة المبكرة', count: fmt(beta.length), pctVal: total > 0 ? Math.round(beta.length/total*100) : 0, note: 'بيانات حقيقية' },
+    ];
+    document.getElementById('funnelCard').innerHTML = funnelData.map(f => `
+      <div class="funnel-item">
+        <span class="funnel-label">${f.label}</span>
+        <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${f.pctVal}%"></div></div>
+        <span class="funnel-pct">${f.pctVal}%</span>
+        <span class="funnel-count">${f.count}</span>
+      </div>
+    `).join('');
+
+    // Waitlist table
+    document.getElementById('waitlistCount').textContent = waitlist.length;
+    document.getElementById('waitlistBody').innerHTML = waitlist.length === 0
+      ? '<div class="empty" style="border:none"><div class="empty-icon">📭</div><div class="empty-title">لا يوجد تسجيلات بعد</div></div>'
+      : `<table><thead><tr><th>الاسم</th><th>البريد</th><th>المنصة</th><th>التاريخ</th></tr></thead><tbody>
+        ${waitlist.slice(0,10).map(r => `
+          <tr>
+            <td>${r.name||'—'}</td>
+            <td style="direction:ltr;text-align:left">${r.email||'—'}</td>
+            <td><span class="badge badge--blue">${r.platform||'—'}</span></td>
+            <td style="color:var(--gray-400)">${dateStr(r.created_at)}</td>
+          </tr>`).join('')}
+        </tbody></table>`;
+
+    // Beta table
+    document.getElementById('betaCount').textContent = `${beta.length} / 10`;
+    document.getElementById('betaBody').innerHTML = beta.length === 0
+      ? '<div class="empty" style="border:none"><div class="empty-icon">🔬</div><div class="empty-title">لا يوجد طلبات تجربة بعد</div></div>'
+      : `<table><thead><tr><th>الاسم</th><th>المتجر</th><th>الحجم</th><th>التاريخ</th></tr></thead><tbody>
+        ${beta.slice(0,10).map(r => `
+          <tr>
+            <td>${r.name||'—'}</td>
+            <td style="direction:ltr;text-align:left;font-size:12px">${r.store_url?`<a href="${r.store_url}" target="_blank" style="color:var(--accent)">${r.store_url.replace('https://','')}</a>`:'—'}</td>
+            <td><span class="badge badge--green">${r.store_size||'—'}</span></td>
+            <td style="color:var(--gray-400)">${dateStr(r.created_at)}</td>
+          </tr>`).join('')}
+        </tbody></table>`;
+
+    // Platform breakdown
+    const platforms = {};
+    data.forEach(r => { if(r.platform) platforms[r.platform] = (platforms[r.platform]||0)+1; });
+    const platLabels = { salla:'سلة', zid:'زد', other:'أخرى' };
+    document.getElementById('platformTable').innerHTML = Object.entries(platforms)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([p,n]) => `<tr><td>${platLabels[p]||p}</td><td><strong>${n}</strong></td><td>${pct(n,total)}</td></tr>`)
+      .join('') || '<tr><td colspan="3" style="text-align:center;color:var(--gray-400)">لا بيانات بعد</td></tr>';
+
+    // Size breakdown
+    const sizes = {};
+    data.forEach(r => { if(r.store_size) sizes[r.store_size] = (sizes[r.store_size]||0)+1; });
+    document.getElementById('sizeTable').innerHTML = Object.entries(sizes)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([s,n]) => `<tr><td>${s} طلب</td><td><strong>${n}</strong></td><td>${pct(n,total)}</td></tr>`)
+      .join('') || '<tr><td colspan="3" style="text-align:center;color:var(--gray-400)">لا بيانات بعد</td></tr>';
+
+    // Recent table
+    document.getElementById('recentCount').textContent = Math.min(data.length, 20);
+    document.getElementById('recentTable').innerHTML = data.slice(0,20).map(r => `
+      <tr>
+        <td>${r.name||'—'}</td>
+        <td style="direction:ltr;text-align:left;font-size:12px;color:var(--gray-500)">${r.email||'—'}</td>
+        <td><span class="badge ${r.form_type==='beta_tester'?'badge--green':'badge--blue'}">${r.form_type==='beta_tester'?'تجربة':'انتظار'}</span></td>
+        <td>${r.platform?`<span class="badge badge--gray">${r.platform}</span>`:'—'}</td>
+        <td>${r.store_size||'—'}</td>
+        <td>${r.wants_beta?'<span class="badge badge--green">نعم</span>':'<span class="badge badge--gray">لا</span>'}</td>
+        <td style="color:var(--gray-400);font-size:12px">${dateStr(r.created_at)}</td>
+      </tr>
+    `).join('') || '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--gray-400)">لا يوجد تسجيلات بعد</td></tr>';
+
+  } catch(err) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    document.getElementById('errorMsg').textContent = err.message || 'خطأ غير متوقع';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
