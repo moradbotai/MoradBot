@@ -1666,12 +1666,19 @@ select.field-light option{background:#fff;color:var(--near-black)}
 /* ── Scroll to top always ── */
 window.scrollTo(0, 0);
 
-/* ── Config (anon key is safe with RLS — INSERT only) ── */
+/* ── Config ── */
 const { createClient } = window.supabase;
 const sb = createClient(
   'https://qvujnhkfqwqfzkkweylk.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2dWpuaGtmcXdxZnpra3dleWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODQyODQsImV4cCI6MjA4MjI2MDI4NH0.j7iGDng9c9ul_SwAdNmY4h_bHynFYj2r3uQEkglssTY'
 );
+
+/* ── Demo session ID (unique per browser visit) ── */
+const DEMO_SESSION = sessionStorage.getItem('demo_sid') || (() => {
+  const id = crypto.randomUUID();
+  sessionStorage.setItem('demo_sid', id);
+  return id;
+})();
 
 /* ── Nav scroll ─────────────────────────────── */
 const nav = document.getElementById('nav');
@@ -1835,7 +1842,7 @@ document.getElementById('btForm').addEventListener('submit', e => {
 });
 
 /* ── Live Demo Chat ─────────────────────────────── */
-const DEMO_WEBHOOK = 'YOUR_N8N_DEMO_WEBHOOK_URL';
+const DEMO_WEBHOOK = 'https://n8n.junkpro.duckdns.org/webhook/chat-landing';
 
 function addBotMsg(msgs, text) {
   msgs.insertAdjacentHTML('beforeend', `
@@ -1885,16 +1892,26 @@ async function sendDemoMsg() {
   addUserMsg(msgs, text);
   const typingId = showTyping(msgs);
 
+  // حفظ رسالة المستخدم
+  sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'user', message: text }]);
+
   try {
     const res = await fetch(DEMO_WEBHOOK, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ message: text, source: 'landing_demo' })
     });
-    const data = await res.json();
-    const reply = data.reply || data.message || data.text || 'شكراً على سؤالك! سيرد عليك مراد بوت قريباً.';
+    const raw = await res.text();
+    let reply = 'شكراً على سؤالك! سيرد عليك مراد بوت قريباً.';
+    try {
+      const data = JSON.parse(raw);
+      reply = data.reply || data.message || data.text || data.output ||
+        (Array.isArray(data) && (data[0]?.reply || data[0]?.output)) || reply;
+    } catch(_) { if (raw.trim()) reply = raw.trim(); }
     document.getElementById(typingId)?.remove();
     addBotMsg(msgs, reply.replace(/</g,'&lt;'));
+    // حفظ رد البوت
+    sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'bot', message: reply }]);
   } catch(e) {
     document.getElementById(typingId)?.remove();
     addBotMsg(msgs, 'عذراً، لم أتمكن من الرد الآن. سنتواصل معك قريباً.');

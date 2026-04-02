@@ -223,6 +223,32 @@ tr:hover td{background:var(--gray-50)}
       </div>
     </div>
 
+    <!-- Demo Chats KPIs -->
+    <div class="section-title" style="margin-top:8px">
+      <span class="section-title-dot" style="background:#8B5CF6"></span>
+      محادثات الدردشة التجريبية
+    </div>
+    <div class="grid-4" id="chatKpiGrid" style="margin-bottom:24px">
+      <!-- populated by JS -->
+    </div>
+    <div class="table-card" style="margin-bottom:32px">
+      <div class="table-card-header">
+        <span class="table-card-title">آخر 30 رسالة في الدردشة التجريبية</span>
+        <span class="table-card-badge" id="chatCount">0</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>الجلسة</th>
+            <th>الدور</th>
+            <th>الرسالة</th>
+            <th>الوقت</th>
+          </tr>
+        </thead>
+        <tbody id="chatTable"></tbody>
+      </table>
+    </div>
+
     <!-- Timeline -->
     <div class="section-title">
       <span class="section-title-dot"></span>
@@ -282,8 +308,12 @@ function dateStr(iso){
 
 async function load() {
   try {
-    const { data, error } = await sb.from('waitlist_submissions').select('*').order('created_at', { ascending: false });
+    const [{ data, error }, { data: chats, error: chatErr }] = await Promise.all([
+      sb.from('waitlist_submissions').select('*').order('created_at', { ascending: false }),
+      sb.from('demo_chats').select('*').order('created_at', { ascending: false }).limit(30)
+    ]);
     if (error) throw error;
+    if (chatErr) console.warn('demo_chats error:', chatErr.message);
 
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('statsContent').style.display = 'block';
@@ -394,6 +424,44 @@ async function load() {
       </tr>
     `).join('') || '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--gray-400)">لا يوجد تسجيلات بعد</td></tr>';
 
+    // Demo Chats
+    const chatData = chats || [];
+    const sessions = [...new Set(chatData.map(c => c.session_id))];
+    const userMsgs = chatData.filter(c => c.role === 'user');
+    const botMsgs = chatData.filter(c => c.role === 'bot');
+    document.getElementById('chatKpiGrid').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">إجمالي الرسائل</div>
+        <div class="stat-value">${fmt(chatData.length)}</div>
+        <div class="stat-desc">مستخدم + بوت</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">جلسات الدردشة</div>
+        <div class="stat-value">${fmt(sessions.length)}</div>
+        <div class="stat-desc">زوار فريدون</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">رسائل المستخدمين</div>
+        <div class="stat-value">${fmt(userMsgs.length)}</div>
+        <div class="stat-desc">${sessions.length > 0 ? (userMsgs.length / sessions.length).toFixed(1) : 0} رسالة/جلسة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">ردود البوت</div>
+        <div class="stat-value">${fmt(botMsgs.length)}</div>
+        <div class="stat-desc">${pct(botMsgs.length, userMsgs.length)} معدل الرد</div>
+      </div>
+    `;
+    document.getElementById('chatCount').textContent = chatData.length;
+    document.getElementById('chatTable').innerHTML = chatData.length === 0
+      ? '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--gray-400)">لا توجد محادثات بعد</td></tr>'
+      : chatData.map(c => `
+        <tr>
+          <td style="font-size:11px;color:var(--gray-400);direction:ltr">${c.session_id.slice(0,8)}…</td>
+          <td><span class="badge ${c.role==='user'?'badge--blue':'badge--green'}">${c.role==='user'?'مستخدم':'بوت'}</span></td>
+          <td style="max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.message}</td>
+          <td style="color:var(--gray-400);font-size:12px;white-space:nowrap">${dateStr(c.created_at)}</td>
+        </tr>`).join('');
+
   } catch(err) {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('errorState').style.display = 'block';
@@ -401,7 +469,9 @@ async function load() {
   }
 }
 
+// تحديث تلقائي كل 30 ثانية
 load();
+setInterval(load, 30000);
 </script>
 </body>
 </html>
