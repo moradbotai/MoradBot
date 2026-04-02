@@ -6,6 +6,14 @@
 <title>إحصاءات مراد بوت — لوحة التحليلات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JV2TWGRS1Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JV2TWGRS1Z');
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -84,11 +92,37 @@ tr:hover td{background:var(--gray-50)}
 /* FUNNEL */
 .funnel-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);padding:24px;margin-bottom:32px}
 .funnel-item{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.funnel-item--pending{opacity:.45}
 .funnel-label{font-size:13px;font-weight:500;color:var(--near-black);min-width:160px;flex-shrink:0}
 .funnel-bar-wrap{flex:1;background:var(--gray-100);border-radius:999px;height:10px;overflow:hidden}
 .funnel-bar{height:100%;border-radius:999px;background:var(--accent);transition:width 1s ease}
+.funnel-bar--pending{background:var(--gray-200)}
 .funnel-pct{font-size:12px;font-weight:600;color:var(--gray-500);min-width:42px;text-align:left}
 .funnel-count{font-size:12px;color:var(--gray-400);min-width:60px}
+.funnel-note{font-size:11px;color:var(--gray-400);background:var(--gray-100);padding:2px 8px;border-radius:999px;white-space:nowrap}
+
+/* SESSION LIST */
+.session-list{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);overflow:hidden;margin-bottom:32px}
+.session-row{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--gray-100);transition:background 120ms;user-select:none}
+.session-row:last-of-type{border-bottom:none}
+.session-row:hover{background:var(--gray-50)}
+.session-row.open{background:#EEF6FF}
+.session-num{font-size:11px;font-weight:700;color:var(--gray-400);min-width:24px}
+.session-id-badge{font-size:11px;font-family:monospace;background:var(--gray-100);color:var(--gray-500);padding:2px 8px;border-radius:4px;direction:ltr;display:inline-block}
+.session-preview{flex:1;font-size:13px;color:var(--gray-500);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.session-meta{font-size:11px;color:var(--gray-400);white-space:nowrap;display:flex;align-items:center;gap:8px}
+.session-chevron{font-size:12px;color:var(--gray-400);transition:transform 200ms;flex-shrink:0}
+.session-row.open .session-chevron{transform:rotate(180deg)}
+.session-messages{display:none;border-bottom:1px solid var(--gray-100);background:#FAFBFC}
+.session-messages.visible{display:block}
+.chat-msg{display:flex;gap:10px;padding:10px 20px;border-bottom:1px solid var(--gray-100)}
+.chat-msg:last-child{border-bottom:none}
+.chat-msg--bot{background:#F0F7FF}
+.chat-bubble-role{font-size:11px;font-weight:600;min-width:52px;padding-top:2px;flex-shrink:0}
+.chat-bubble-role--user{color:#0075DE}
+.chat-bubble-role--bot{color:#059669}
+.chat-bubble-text{font-size:13px;color:var(--near-black);line-height:1.6;flex:1}
+.chat-bubble-time{font-size:11px;color:var(--gray-400);white-space:nowrap;padding-top:2px;flex-shrink:0}
 
 /* EMPTY STATE */
 .empty{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r-xl);padding:48px 24px;text-align:center;margin-bottom:32px}
@@ -231,22 +265,15 @@ tr:hover td{background:var(--gray-50)}
     <div class="grid-4" id="chatKpiGrid" style="margin-bottom:24px">
       <!-- populated by JS -->
     </div>
-    <div class="table-card" style="margin-bottom:32px">
-      <div class="table-card-header">
-        <span class="table-card-title">آخر 30 رسالة في الدردشة التجريبية</span>
-        <span class="table-card-badge" id="chatCount">0</span>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>الجلسة</th>
-            <th>الدور</th>
-            <th>الرسالة</th>
-            <th>الوقت</th>
-          </tr>
-        </thead>
-        <tbody id="chatTable"></tbody>
-      </table>
+
+    <!-- Sessions list -->
+    <div class="section-title">
+      <span class="section-title-dot" style="background:#8B5CF6"></span>
+      سجلات الجلسات
+      <span class="table-card-badge" id="sessionsCount" style="margin-right:4px">0</span>
+    </div>
+    <div id="sessionsList" class="session-list">
+      <div class="loading">جاري التحميل<span class="spin"></span></div>
     </div>
 
     <!-- Timeline -->
@@ -310,7 +337,7 @@ async function load() {
   try {
     const [{ data, error }, { data: chats, error: chatErr }] = await Promise.all([
       sb.from('waitlist_submissions').select('*').order('created_at', { ascending: false }),
-      sb.from('demo_chats').select('*').order('created_at', { ascending: false }).limit(30)
+      sb.from('demo_chats').select('*').order('created_at', { ascending: true })
     ]);
     if (error) throw error;
     if (chatErr) console.warn('demo_chats error:', chatErr.message);
@@ -338,8 +365,8 @@ async function load() {
       </div>
       <div class="stat-card">
         <div class="stat-label">طلبات التجربة</div>
-        <div class="stat-value">${fmt(beta.length)}<span class="stat-unit"> / 10</span></div>
-        <div class="stat-desc">${pct(beta.length, 10)} من الأماكن ممتلئة</div>
+        <div class="stat-value">${fmt(beta.length)}<span class="stat-unit"> / 50</span></div>
+        <div class="stat-desc">${pct(beta.length, 50)} من الأماكن ممتلئة</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">يريدون التجربة</div>
@@ -348,20 +375,21 @@ async function load() {
       </div>
     `;
 
-    // Funnel
+    // Funnel — only real data rows have bars; pending rows show placeholder
+    const betaPct = total > 0 ? Math.round(beta.length / total * 100) : 0;
     const funnelData = [
-      { label: 'زوار الصفحة (تقدير)', count: '—', pctVal: 100, note: 'ادمج مع Google Analytics' },
-      { label: 'وصلوا لنموذج التسجيل', count: '—', pctVal: 60, note: 'يحتاج تتبع scroll events' },
-      { label: 'بدأوا تعبئة النموذج', count: '—', pctVal: 35, note: 'يحتاج تتبع form focus' },
-      { label: 'أكملوا التسجيل', count: fmt(total), pctVal: total > 0 ? 25 : 0, note: 'بيانات حقيقية' },
-      { label: 'طلبوا التجربة المبكرة', count: fmt(beta.length), pctVal: total > 0 ? Math.round(beta.length/total*100) : 0, note: 'بيانات حقيقية' },
+      { label: 'زوار الصفحة', count: '—', pctVal: null, note: 'يحتاج Cloudflare Analytics' },
+      { label: 'وصلوا لنموذج التسجيل', count: '—', pctVal: null, note: 'يحتاج تتبع scroll' },
+      { label: 'أكملوا التسجيل', count: fmt(total), pctVal: total > 0 ? 100 : 0, note: null },
+      { label: 'طلبوا التجربة المبكرة', count: fmt(beta.length), pctVal: betaPct, note: null },
     ];
     document.getElementById('funnelCard').innerHTML = funnelData.map(f => `
-      <div class="funnel-item">
+      <div class="funnel-item${f.pctVal === null ? ' funnel-item--pending' : ''}">
         <span class="funnel-label">${f.label}</span>
-        <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${f.pctVal}%"></div></div>
-        <span class="funnel-pct">${f.pctVal}%</span>
+        <div class="funnel-bar-wrap"><div class="funnel-bar${f.pctVal === null ? ' funnel-bar--pending' : ''}" style="width:${f.pctVal ?? 30}%"></div></div>
+        <span class="funnel-pct">${f.pctVal !== null ? f.pctVal + '%' : '—'}</span>
         <span class="funnel-count">${f.count}</span>
+        ${f.note ? `<span class="funnel-note">⚙ ${f.note}</span>` : ''}
       </div>
     `).join('');
 
@@ -380,7 +408,7 @@ async function load() {
         </tbody></table>`;
 
     // Beta table
-    document.getElementById('betaCount').textContent = `${beta.length} / 10`;
+    document.getElementById('betaCount').textContent = `${beta.length} / 50`;
     document.getElementById('betaBody').innerHTML = beta.length === 0
       ? '<div class="empty" style="border:none"><div class="empty-icon">🔬</div><div class="empty-title">لا يوجد طلبات تجربة بعد</div></div>'
       : `<table><thead><tr><th>الاسم</th><th>المتجر</th><th>الحجم</th><th>التاريخ</th></tr></thead><tbody>
@@ -426,9 +454,23 @@ async function load() {
 
     // Demo Chats
     const chatData = chats || [];
-    const sessions = [...new Set(chatData.map(c => c.session_id))];
     const userMsgs = chatData.filter(c => c.role === 'user');
-    const botMsgs = chatData.filter(c => c.role === 'bot');
+    const botMsgs  = chatData.filter(c => c.role === 'bot');
+
+    // Group by session (messages already ordered ascending)
+    const sessionMap = {};
+    chatData.forEach(c => {
+      if (!sessionMap[c.session_id]) sessionMap[c.session_id] = [];
+      sessionMap[c.session_id].push(c);
+    });
+    const sessionIds = Object.keys(sessionMap);
+    // Sort sessions by latest message (desc)
+    sessionIds.sort((a, b) => {
+      const la = sessionMap[a].at(-1).created_at;
+      const lb = sessionMap[b].at(-1).created_at;
+      return new Date(lb) - new Date(la);
+    });
+
     document.getElementById('chatKpiGrid').innerHTML = `
       <div class="stat-card">
         <div class="stat-label">إجمالي الرسائل</div>
@@ -437,13 +479,13 @@ async function load() {
       </div>
       <div class="stat-card">
         <div class="stat-label">جلسات الدردشة</div>
-        <div class="stat-value">${fmt(sessions.length)}</div>
+        <div class="stat-value">${fmt(sessionIds.length)}</div>
         <div class="stat-desc">زوار فريدون</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">رسائل المستخدمين</div>
         <div class="stat-value">${fmt(userMsgs.length)}</div>
-        <div class="stat-desc">${sessions.length > 0 ? (userMsgs.length / sessions.length).toFixed(1) : 0} رسالة/جلسة</div>
+        <div class="stat-desc">${sessionIds.length > 0 ? (userMsgs.length / sessionIds.length).toFixed(1) : 0} رسالة/جلسة</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">ردود البوت</div>
@@ -451,21 +493,55 @@ async function load() {
         <div class="stat-desc">${pct(botMsgs.length, userMsgs.length)} معدل الرد</div>
       </div>
     `;
-    document.getElementById('chatCount').textContent = chatData.length;
-    document.getElementById('chatTable').innerHTML = chatData.length === 0
-      ? '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--gray-400)">لا توجد محادثات بعد</td></tr>'
-      : chatData.map(c => `
-        <tr>
-          <td style="font-size:11px;color:var(--gray-400);direction:ltr">${c.session_id.slice(0,8)}…</td>
-          <td><span class="badge ${c.role==='user'?'badge--blue':'badge--green'}">${c.role==='user'?'مستخدم':'بوت'}</span></td>
-          <td style="max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.message}</td>
-          <td style="color:var(--gray-400);font-size:12px;white-space:nowrap">${dateStr(c.created_at)}</td>
-        </tr>`).join('');
+    document.getElementById('sessionsCount').textContent = sessionIds.length;
+
+    if (sessionIds.length === 0) {
+      document.getElementById('sessionsList').innerHTML =
+        '<div class="empty" style="border:none"><div class="empty-icon">💬</div><div class="empty-title">لا توجد محادثات بعد</div></div>';
+    } else {
+      document.getElementById('sessionsList').innerHTML = sessionIds.map((sid, i) => {
+        const msgs = sessionMap[sid];
+        const firstUser = msgs.find(m => m.role === 'user');
+        const preview = firstUser ? firstUser.message.slice(0, 70) + (firstUser.message.length > 70 ? '…' : '') : '—';
+        const lastTime = dateStr(msgs.at(-1).created_at);
+        const msgsHtml = msgs.map(m => `
+          <div class="chat-msg chat-msg--${m.role}">
+            <span class="chat-bubble-role chat-bubble-role--${m.role}">${m.role === 'user' ? 'مستخدم' : 'بوت'}</span>
+            <span class="chat-bubble-text">${m.message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>
+            <span class="chat-bubble-time">${dateStr(m.created_at)}</span>
+          </div>`).join('');
+        return `
+          <div class="session-row" onclick="toggleSession('${sid}',this)">
+            <span class="session-num">#${i+1}</span>
+            <span class="session-id-badge">${sid.slice(0,8)}…</span>
+            <span class="session-preview">${preview}</span>
+            <span class="session-meta">
+              <span class="badge badge--gray">${msgs.length} رسالة</span>
+              ${lastTime}
+            </span>
+            <span class="session-chevron">▼</span>
+          </div>
+          <div class="session-messages" id="sess-${sid}">${msgsHtml}</div>`;
+      }).join('');
+    }
 
   } catch(err) {
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('errorState').style.display = 'block';
     document.getElementById('errorMsg').textContent = err.message || 'خطأ غير متوقع';
+  }
+}
+
+function toggleSession(sid, row) {
+  const panel = document.getElementById('sess-' + sid);
+  const isOpen = panel.classList.contains('visible');
+  // Close all open sessions
+  document.querySelectorAll('.session-messages.visible').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.session-row.open').forEach(r => r.classList.remove('open'));
+  // Open clicked one if it was closed
+  if (!isOpen) {
+    panel.classList.add('visible');
+    row.classList.add('open');
   }
 }
 

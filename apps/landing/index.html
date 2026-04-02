@@ -8,6 +8,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JV2TWGRS1Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JV2TWGRS1Z');
+</script>
+<!-- TODO: أضف Cloudflare Web Analytics beacon هنا -->
+<!-- TODO: أضف Microsoft Clarity script هنا -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <!-- Task 11: force scroll to top before anything renders -->
 <script>if(history.scrollRestoration)history.scrollRestoration='manual';window.scrollTo(0,0);</script>
@@ -1568,7 +1578,7 @@ select.field-light option{background:#fff;color:var(--near-black)}
           </li>
           <li style="font-size:13px;color:rgba(255,255,255,.65);display:flex;gap:8px;align-items:flex-start">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>
-            10 أماكن فقط — بدأ الاكتتاب
+            50 مكاناً فقط — بدأ الاكتتاب
           </li>
         </ul>
         <a href="#beta" class="btn btn-dark btn-full" style="font-size:14px;background:#0075DE">احجز مكاني — أريد التجربة</a>
@@ -1586,7 +1596,7 @@ select.field-light option{background:#fff;color:var(--near-black)}
 
     <div class="beta__badge reveal">
       <svg class="icon icon--sm"><use href="#ic-target"/></svg>
-      10 أماكن فقط
+      50 مكاناً فقط
     </div>
 
     <h2 class="reveal">
