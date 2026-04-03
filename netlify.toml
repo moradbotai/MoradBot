@@ -1,0 +1,10 @@
+[build]
+  # Build validates the entire monorepo but only publishes the landing page
+  # API deployment is manual via `wrangler deploy` (Rule 6)
+  command = "pnpm build"
+  publish = "apps/landing"
+  ignore = "git diff --quiet $COMMIT_PARENT $COMMIT -- apps/landing && exit 1 || exit 0"
+
+[build.environment]
+  NODE_ENV = "production"
+  PNPM_FLAGS = "--frozen-lockfile"
