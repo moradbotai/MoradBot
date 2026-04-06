@@ -1099,6 +1099,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         <li><a href="#faq">الأسئلة</a></li>
       </ul>
       <div class="nav__right">
+        <a href="#demo" class="btn btn-ghost btn-sm">جرّب الآن ←</a>
         <a href="#register" class="btn btn-primary btn-sm">سجّل الآن</a>
         <button class="nav__hamburger" id="navMenuBtn" aria-label="فتح القائمة">
           <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
@@ -1119,6 +1120,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
       <li><a href="#faq">الأسئلة</a></li>
     </ul>
     <div class="nav__mobile-btns">
+      <a href="#demo" class="btn btn-ghost" style="width:100%;justify-content:center">جرّب الآن ←</a>
       <a href="#register" class="btn btn-primary" style="width:100%;justify-content:center">سجّل الآن</a>
     </div>
   </div>
@@ -1669,7 +1671,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         <input class="field" type="email" name="email" placeholder="البريد الإلكتروني" required/>
       </div>
       <div class="row2">
-        <select class="field" name="platform" required>
+        <select class="field" name="platform" required id="platformSelect">
           <option value="" disabled selected>المنصة التجارية</option>
           <option value="salla">سلة</option>
           <option value="zid">زد</option>
@@ -1682,6 +1684,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
           <option value="200+">أكثر من ٢٠٠ طلب</option>
         </select>
       </div>
+      <input class="field" type="text" name="platform_other" id="platformOther" placeholder="اسم المنصة التجارية (مثال: شوبيفاي)" maxlength="60" style="display:none"/>
       <input class="field" type="url" name="store_url" placeholder="رابط المتجر (مثال: mystore.sa)" required/>
 
       <label class="beta-check">
@@ -1804,15 +1807,31 @@ function faq(btn) {
   }
 }
 
+/* ── Platform "other" field toggle ─────────── */
+document.getElementById('platformSelect')?.addEventListener('change', function() {
+  const otherField = document.getElementById('platformOther');
+  if (this.value === 'other') {
+    otherField.style.display = '';
+    otherField.required = true;
+  } else {
+    otherField.style.display = 'none';
+    otherField.required = false;
+    otherField.value = '';
+  }
+});
+
 /* ── Generic form submit → Supabase ────────── */
 async function submit(formEl, btnEl, okEl, errEl, formType) {
   const fd = new FormData(formEl);
   const wantsBeta = formEl.querySelector('[name="wants_beta"]')?.checked ? 1 : 0;
+  const platformRaw = fd.get('platform') || 'salla';
+  const platformOther = fd.get('platform_other')?.trim().toLowerCase() || '';
+  const platform = (platformRaw === 'other' && platformOther) ? platformOther : platformRaw;
   const payload = {
     form_type:  wantsBeta ? 'beta_tester' : formType,
     name:       fd.get('name')?.trim()      || '',
     email:      fd.get('email')?.trim()     || '',
-    platform:   fd.get('platform')          || 'salla',
+    platform,
     store_url:  fd.get('store_url')?.trim() || null,
     store_size: fd.get('store_size')        || null,
     wants_beta: wantsBeta,
@@ -1920,7 +1939,8 @@ async function sendDemoMsg() {
   posthog.capture('demo_message_sent', { message_length: text.length });
   const typingId = showTyping(msgs);
 
-  sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'user', message: text }]);
+  const { error: userErr } = await sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'user', message: text }]);
+  if (userErr) console.error('demo_chats insert user:', userErr.message);
 
   try {
     const res = await fetch(DEMO_WEBHOOK, {
@@ -1937,7 +1957,8 @@ async function sendDemoMsg() {
     } catch(_) { if (raw.trim()) reply = raw.trim(); }
     document.getElementById(typingId)?.remove();
     addBotMsg(msgs, formatBotReply(reply).replace(/</g,'&lt;'));
-    sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'bot', message: reply }]);
+    const { error: botErr } = await sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'bot', message: reply }]);
+    if (botErr) console.error('demo_chats insert bot:', botErr.message);
   } catch(e) {
     document.getElementById(typingId)?.remove();
     addBotMsg(msgs, 'عذراً، تعذَّر الردُّ في الوقت الراهن. يُرجى المحاولة مجدداً.');
