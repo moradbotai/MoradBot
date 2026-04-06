@@ -137,6 +137,45 @@ tr:hover td{background:var(--gray-50)}
 
 /* FOOTER */
 .page-footer{text-align:center;padding:24px;font-size:12px;color:var(--gray-400);border-top:1px solid var(--gray-200)}
+/* POSTHOG SECTION */
+.ph-section{background:linear-gradient(135deg,#01041B 0%,#0A1035 100%);border-radius:var(--r-xl);padding:28px;margin-bottom:32px;border:1px solid rgba(255,255,255,.08)}
+.ph-section-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.ph-section-title-dot{width:8px;height:8px;border-radius:50%;background:#0075DE;flex-shrink:0}
+.ph-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:900px){.ph-kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.ph-kpi-grid{grid-template-columns:1fr 1fr}}
+.ph-kpi{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:16px}
+.ph-kpi-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.ph-kpi-value{font-size:clamp(22px,3vw,34px);font-weight:700;color:#fff;line-height:1;direction:ltr;display:inline-block}
+.ph-kpi-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+.ph-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:700px){.ph-grid-2{grid-template-columns:1fr}}
+.ph-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-lg);padding:16px}
+.ph-card-title{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
+.ph-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ph-row:last-child{margin-bottom:0}
+.ph-row-label{font-size:12px;color:rgba(255,255,255,.7);min-width:100px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.ph-bar-wrap{flex:1;background:rgba(255,255,255,.07);border-radius:999px;height:6px;overflow:hidden}
+.ph-bar{height:100%;border-radius:999px;background:#0075DE;transition:width .8s ease}
+.ph-row-count{font-size:12px;font-weight:600;color:rgba(255,255,255,.6);min-width:32px;text-align:left;direction:ltr}
+.ph-trend{display:flex;align-items:flex-end;gap:3px;height:44px;margin-top:4px}
+.ph-trend-bar{flex:1;border-radius:2px 2px 0 0;background:#0075DE;min-width:6px;transition:height .5s ease}
+.ph-trend-label{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:4px;direction:ltr}
+.ph-vital{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.ph-vital:last-child{border-bottom:none}
+.ph-vital-name{font-size:12px;color:rgba(255,255,255,.5)}
+.ph-vital-val{font-size:15px;font-weight:700;direction:ltr}
+.ph-vital-val--good{color:#10B981}
+.ph-vital-val--needs{color:#F59E0B}
+.ph-vital-val--poor{color:#EF4444}
+.ph-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.04em}
+.ph-badge--good{background:rgba(16,185,129,.15);color:#10B981}
+.ph-badge--needs{background:rgba(245,158,11,.15);color:#F59E0B}
+.ph-badge--poor{background:rgba(239,68,68,.15);color:#EF4444}
+.ph-empty{font-size:12px;color:rgba(255,255,255,.25);text-align:center;padding:12px 0;font-style:italic}
+.ph-loading{font-size:12px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:8px}
+.ph-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.1);border-top-color:rgba(0,117,222,.6);border-radius:50%;animation:spin 600ms linear infinite}
+.ph-error{font-size:12px;color:#EF4444;padding:8px 0}
 /* GATE */
 #statsGate input:focus{outline:none;border-color:rgba(0,117,222,.6)!important;box-shadow:0 0 0 3px rgba(0,117,222,.15)}
 </style>
@@ -310,6 +349,47 @@ async function checkGate() {
             <thead><tr><th>الحجم</th><th>العدد</th><th>النسبة</th></tr></thead>
             <tbody id="sizeTable"></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PostHog Analytics -->
+    <div id="phSection" class="ph-section">
+      <div class="ph-section-title">
+        <span class="ph-section-title-dot"></span>
+        تحليلات الزوار — PostHog
+        <span style="font-size:11px;font-weight:400;color:rgba(255,255,255,.3);margin-right:auto">آخر 30 يوم</span>
+      </div>
+
+      <!-- KPIs -->
+      <div class="ph-kpi-grid" id="phKpis">
+        <div class="ph-kpi"><div class="ph-kpi-label">مشاهدات الصفحة</div><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        <div class="ph-kpi"><div class="ph-kpi-label">زوار فريدون</div><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        <div class="ph-kpi"><div class="ph-kpi-label">الجلسات</div><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        <div class="ph-kpi"><div class="ph-kpi-label">معدل التحويل</div><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+      </div>
+
+      <!-- Daily trend + Web Vitals -->
+      <div class="ph-grid-2">
+        <div class="ph-card">
+          <div class="ph-card-title">الزيارات اليومية (14 يوم)</div>
+          <div id="phTrend"><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        </div>
+        <div class="ph-card">
+          <div class="ph-card-title">أداء الصفحة — Web Vitals</div>
+          <div id="phVitals"><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        </div>
+      </div>
+
+      <!-- Sources + Devices -->
+      <div class="ph-grid-2">
+        <div class="ph-card">
+          <div class="ph-card-title">مصادر الزيارات</div>
+          <div id="phSources"><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
+        </div>
+        <div class="ph-card">
+          <div class="ph-card-title">الأجهزة والمتصفحات</div>
+          <div id="phDevices"><div class="ph-loading"><span class="ph-spin"></span>تحميل</div></div>
         </div>
       </div>
     </div>
@@ -602,7 +682,156 @@ function toggleSession(sid, row) {
   }
 }
 
+/* ── PostHog Analytics ───────────────────────── */
+const PHQ_HOST = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'https://moradbot.com' : '';
+
+async function phq(sql) {
+  const res = await fetch(PHQ_HOST + '/phq', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: { kind: 'HogQLQuery', query: sql } })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+function phBar(label, count, max) {
+  const pct = max > 0 ? Math.round(count / max * 100) : 0;
+  return `<div class="ph-row">
+    <span class="ph-row-label" title="${label}">${label}</span>
+    <div class="ph-bar-wrap"><div class="ph-bar" style="width:${pct}%"></div></div>
+    <span class="ph-row-count">${count}</span>
+  </div>`;
+}
+
+function vitalClass(metric, val) {
+  const thresholds = { FCP:[1800,3000], LCP:[2500,4000], CLS:[0.1,0.25], INP:[200,500] };
+  const t = thresholds[metric];
+  if (!t) return 'good';
+  return val <= t[0] ? 'good' : val <= t[1] ? 'needs' : 'poor';
+}
+
+async function loadPostHog() {
+  try {
+    // KPIs
+    const kpiRes = await phq(`
+      SELECT
+        count() AS pageviews,
+        count(distinct person_id) AS visitors,
+        count(distinct session_id) AS sessions
+      FROM events
+      WHERE event = '$pageview'
+        AND timestamp >= now() - interval 30 day
+    `);
+    const [pageviews, visitors, sessions] = kpiRes.results?.[0] ?? [0,0,0];
+
+    const convRes = await phq(`
+      SELECT count(distinct person_id) AS converted
+      FROM events
+      WHERE event = 'form_submitted'
+        AND timestamp >= now() - interval 30 day
+    `);
+    const converted = convRes.results?.[0]?.[0] ?? 0;
+    const convRate = visitors > 0 ? (converted / visitors * 100).toFixed(1) + '%' : '—';
+
+    document.getElementById('phKpis').innerHTML = `
+      <div class="ph-kpi"><div class="ph-kpi-label">مشاهدات الصفحة</div><div class="ph-kpi-value">${fmt(pageviews)}</div></div>
+      <div class="ph-kpi"><div class="ph-kpi-label">زوار فريدون</div><div class="ph-kpi-value">${fmt(visitors)}</div></div>
+      <div class="ph-kpi"><div class="ph-kpi-label">الجلسات</div><div class="ph-kpi-value">${fmt(sessions)}</div></div>
+      <div class="ph-kpi"><div class="ph-kpi-label">معدل التحويل</div><div class="ph-kpi-value">${convRate}</div><div class="ph-kpi-sub">${converted} تسجيل</div></div>
+    `;
+
+    // Daily trend (14 days)
+    const trendRes = await phq(`
+      SELECT toDate(timestamp) AS day, count() AS views
+      FROM events
+      WHERE event = '$pageview'
+        AND timestamp >= now() - interval 14 day
+      GROUP BY day ORDER BY day ASC
+    `);
+    const trendRows = trendRes.results ?? [];
+    const maxViews = Math.max(...trendRows.map(r => r[1]), 1);
+    const trendHtml = trendRows.length === 0
+      ? '<div class="ph-empty">لا بيانات بعد</div>'
+      : `<div class="ph-trend">${trendRows.map(r => {
+          const h = Math.max(4, Math.round(r[1] / maxViews * 44));
+          const day = r[0].slice(5);
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center">
+            <div class="ph-trend-bar" style="height:${h}px" title="${r[0]}: ${r[1]}"></div>
+            <div class="ph-trend-label">${day}</div>
+          </div>`;
+        }).join('')}</div>`;
+    document.getElementById('phTrend').innerHTML = trendHtml;
+
+    // Web Vitals
+    const vitalsRes = await phq(`
+      SELECT
+        avg(toFloat64OrNull(properties.$fcp)) AS fcp,
+        avg(toFloat64OrNull(properties.$lcp)) AS lcp,
+        avg(toFloat64OrNull(properties.$cls)) AS cls,
+        avg(toFloat64OrNull(properties.$inp)) AS inp
+      FROM events
+      WHERE event = '$web_vitals'
+        AND timestamp >= now() - interval 30 day
+    `);
+    const [fcp, lcp, cls, inp] = vitalsRes.results?.[0] ?? [null,null,null,null];
+    const vitals = [
+      { name:'FCP', val: fcp, fmt: v => (v/1000).toFixed(2)+'s' },
+      { name:'LCP', val: lcp, fmt: v => (v/1000).toFixed(2)+'s' },
+      { name:'CLS', val: cls, fmt: v => v.toFixed(3) },
+      { name:'INP', val: inp, fmt: v => Math.round(v)+'ms' },
+    ];
+    document.getElementById('phVitals').innerHTML = vitals.map(v => {
+      if (v.val == null) return `<div class="ph-vital"><span class="ph-vital-name">${v.name}</span><span class="ph-vital-val" style="color:rgba(255,255,255,.2)">—</span></div>`;
+      const cls2 = vitalClass(v.name, v.val);
+      return `<div class="ph-vital">
+        <span class="ph-vital-name">${v.name}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ph-vital-val ph-vital-val--${cls2}">${v.fmt(v.val)}</span>
+          <span class="ph-badge ph-badge--${cls2}">${cls2==='good'?'جيد':cls2==='needs'?'متوسط':'ضعيف'}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Sources
+    const srcRes = await phq(`
+      SELECT coalesce(nullIf(properties.$referring_domain,''),'مباشر') AS src, count() AS n
+      FROM events
+      WHERE event = '$pageview' AND timestamp >= now() - interval 30 day
+      GROUP BY src ORDER BY n DESC LIMIT 6
+    `);
+    const srcRows = srcRes.results ?? [];
+    const srcMax = srcRows[0]?.[1] ?? 1;
+    document.getElementById('phSources').innerHTML = srcRows.length === 0
+      ? '<div class="ph-empty">لا بيانات بعد</div>'
+      : srcRows.map(r => phBar(r[0], r[1], srcMax)).join('');
+
+    // Devices
+    const devRes = await phq(`
+      SELECT coalesce(nullIf(properties.$device_type,''),'غير معروف') AS dev, count() AS n
+      FROM events
+      WHERE event = '$pageview' AND timestamp >= now() - interval 30 day
+      GROUP BY dev ORDER BY n DESC LIMIT 5
+    `);
+    const devRows = devRes.results ?? [];
+    const devMax = devRows[0]?.[1] ?? 1;
+    document.getElementById('phDevices').innerHTML = devRows.length === 0
+      ? '<div class="ph-empty">لا بيانات بعد</div>'
+      : devRows.map(r => phBar(r[0], r[1], devMax)).join('');
+
+  } catch(e) {
+    document.getElementById('phSection').querySelector('.ph-kpi-grid').innerHTML =
+      `<div class="ph-error" style="grid-column:1/-1">⚠ ${e.message}</div>`;
+    console.error('PostHog error:', e);
+  }
+}
+
 // تحديث تلقائي كل 30 ثانية
+loadPostHog();
 load();
 setInterval(load, 30000);
 </script>
