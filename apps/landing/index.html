@@ -1736,12 +1736,8 @@ const sb = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2dWpuaGtmcXdxZnpra3dleWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODQyODQsImV4cCI6MjA4MjI2MDI4NH0.j7iGDng9c9ul_SwAdNmY4h_bHynFYj2r3uQEkglssTY'
 );
 
-/* ── Demo session ID (unique per browser visit) ── */
-const DEMO_SESSION = sessionStorage.getItem('demo_sid') || (() => {
-  const id = crypto.randomUUID();
-  sessionStorage.setItem('demo_sid', id);
-  return id;
-})();
+/* ── Demo session ID (unique per page load) ── */
+const DEMO_SESSION = crypto.randomUUID();
 
 /* ── Nav scroll + mobile menu ───────────────── */
 const nav = document.getElementById('nav');
