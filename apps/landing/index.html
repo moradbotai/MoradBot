@@ -19,6 +19,16 @@
 <!-- TODO: أضف Cloudflare Web Analytics beacon هنا -->
 <!-- TODO: أضف Microsoft Clarity script هنا -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- PostHog Analytics -->
+<script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId setPersonPropertiesForFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7', {
+  api_host: 'https://us.i.posthog.com',
+  person_profiles: 'identified_only',
+  capture_pageview: true,
+  capture_pageleave: true,
+});
+</script>
 <!-- Task 11: force scroll to top before anything renders -->
 <script>if(history.scrollRestoration)history.scrollRestoration='manual';window.scrollTo(0,0);</script>
 
@@ -1795,7 +1805,10 @@ function faq(btn) {
   const item = btn.closest('.faq-q');
   const open = item.classList.contains('open');
   document.querySelectorAll('.faq-q.open').forEach(i => i.classList.remove('open'));
-  if (!open) item.classList.add('open');
+  if (!open) {
+    item.classList.add('open');
+    posthog.capture('faq_opened', { question: btn.textContent.trim() });
+  }
 }
 
 /* ── Generic form submit → Supabase ────────── */
@@ -1829,6 +1842,18 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
   formEl.style.display = 'none';
   okEl.classList.add('show');
   okEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // PostHog: تتبع التسجيل
+  posthog.capture('form_submitted', {
+    form_type:  formType,
+    platform:   payload.platform,
+    store_size: payload.store_size,
+    has_phone:  !!payload.phone,
+    wants_beta: !!payload.wants_beta,
+  });
+  if (payload.email) {
+    posthog.identify(payload.email, { email: payload.email, name: payload.name });
+  }
 }
 
 /* ── Waitlist form ──────────────────────────── */
@@ -1889,7 +1914,11 @@ function showTyping(msgs) {
 
 function askDemo(text) {
   const input = document.getElementById('demoInput');
-  if (input) { input.value = text; sendDemoMsg(); }
+  if (input) {
+    posthog.capture('demo_pill_clicked', { question: text });
+    input.value = text;
+    sendDemoMsg();
+  }
 }
 
 async function sendDemoMsg() {
@@ -1900,6 +1929,7 @@ async function sendDemoMsg() {
   input.value = '';
 
   addUserMsg(msgs, text);
+  posthog.capture('demo_message_sent', { message_length: text.length });
   const typingId = showTyping(msgs);
 
   // حفظ رسالة المستخدم
