@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "build": "tsc && wrangler deploy --dry-run",
+    "build": "tsc",
+    "build:dry-run": "tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "type-check": "tsc --noEmit",
     "lint": "biome lint .",
@@ -19,6 +20,7 @@
     "@supabase/supabase-js": "^2.48.0",
     "hono": "^4.6.14",
     "@hono/zod-validator": "^0.4.1",
+    "posthog-node": "^4.8.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
