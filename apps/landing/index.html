@@ -1822,7 +1822,7 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
     store_url:  fd.get('store_url')?.trim() || null,
     phone:      fd.get('phone')?.trim()     || null,
     store_size: fd.get('store_size')        || null,
-    wants_beta: document.getElementById('wantsBeta')?.checked ? 1 : 0,
+    wants_beta: document.getElementById('wantsBeta')?.checked === true,
   };
 
   btnEl.classList.add('spin');
