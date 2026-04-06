@@ -1850,6 +1850,7 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
   formEl.style.display = 'none';
   okEl.classList.add('show');
   okEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  localStorage.setItem('moradbot_reg', payload.email || '1');
 
   // PostHog: تتبع التسجيل
   posthog.capture('form_submitted', {
@@ -1864,9 +1865,21 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
   }
 }
 
+/* ── Registration: prevent duplicate submissions ── */
+(function() {
+  const saved = localStorage.getItem('moradbot_reg');
+  if (saved) {
+    document.getElementById('regForm').style.display = 'none';
+    const ok = document.getElementById('regOk');
+    ok.textContent = 'أنت مسجّل بالفعل — سنتواصل معك قريباً.';
+    ok.classList.add('show');
+  }
+})();
+
 /* ── Registration form ──────────────────────── */
 document.getElementById('regForm').addEventListener('submit', e => {
   e.preventDefault();
+  if (localStorage.getItem('moradbot_reg')) return;
   submit(e.target,
     document.getElementById('regBtn'),
     document.getElementById('regOk'),
