@@ -1,5 +1,6 @@
 name = "moradbot"
+main = "worker.js"
 compatibility_date = "2025-11-01"
 
-# Serve static files from this directory
+# Serve static files + PostHog reverse proxy via worker.js
 assets = { directory = "." }
