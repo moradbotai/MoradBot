@@ -1,0 +1,5 @@
+name = "moradbot"
+compatibility_date = "2025-11-01"
+
+# Serve static files from this directory
+assets = { directory = "." }
