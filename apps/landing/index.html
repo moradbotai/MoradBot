@@ -936,7 +936,7 @@ select.field-light option{background:#fff;color:var(--near-black)}
 }
 .footer__row{
   display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:16px;
+  flex-wrap:wrap;gap:16px;position:relative;
 }
 .footer__logo{
   display:flex;align-items:center;gap:9px;text-decoration:none;
@@ -1135,24 +1135,24 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
 
     <div class="hero__badge reveal">
       <span class="hero__badge-dot"></span>
-      الإطلاق على سلة — زد والمنصات الأخرى (قريباً)
+      🚀 سيتم إطلاق النسخة الأولى قريباً — 🎁 أولوية الوصول للمستخدمين الأوائل
     </div>
 
     <h1 class="reveal">
-      بوت ذكي يرد على عملاءك<br/>
-      <em>بلغتهم</em>، بدلاً عنك
+      لا تخسر أي عميل<br/>
+      <em>بسبب تأخر الرد</em>
     </h1>
 
     <p class="hero__sub reveal">
-      مراد بوت يُجيب تلقائياً على الأسئلة الشائعة لمتجرك 24/7 —
-      شحن، دفع، إرجاع، منتجات — ويتكامل مع سلة في أقل من خمس دقائق.
+      بوت ذكي مدمج داخل موقعك يرد على الزوار فورًا، يجيب على أسئلتهم،
+      ويساعدهم على اتخاذ قرار الشراء — دون تدخل منك.
     </p>
 
     <div class="hero__form-wrap reveal">
-      <a href="#demo" class="hvb" id="hvbBtn">
+      <a href="#register" class="hvb" id="hvbBtn">
         <span class="hvb__glow" id="hvbGlow"></span>
         <span class="hvb__bg"></span>
-        <span class="hvb__text">جرِّب قبل التسجيل ←</span>
+        <span class="hvb__text">انضم إلى قائمة الانتظار الآن ←</span>
       </a>
     </div>
 
@@ -1180,28 +1180,24 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="label">المزايا والإمكانيات</span>
-      <h2>كل ما يحتاجه متجرك في مكان واحد</h2>
-      <p>من الربط الأول حتى آخر رسالة — كل ما يحتاجه متجرك في مكانٍ واحد</p>
+      <h2>كل ما تحتاجه للتعامل مع زوار موقعك بذكاء</h2>
+      <p>من اللحظة الأولى التي يدخل فيها الزائر حتى قرار الشراء</p>
     </div>
 
     <div class="bento">
 
       <!-- Row 1: hero feature (c2) + dashboard -->
       <div class="card card--dark card--c2 reveal">
-        <div class="card__tag">الميزة الأساسية</div>
+        <div class="card__tag">ما يفعله البوت</div>
         <svg class="card__icon icon--2xl"><use href="#ic-chat"/></svg>
-        <h3>ردود تلقائية 24/7 بلغة عميلك</h3>
-        <p>مراد يُجيب على أسئلة الشحن، الدفع، الإرجاع، والمنتجات في أي وقت. يُجيب بلغة عميلك تلقائياً — ويتعلم ذاتياً مع كل محادثة، فكلما استُخدم أكثر أصبح أذكى وأدق.</p>
-        <div class="card__specs" style="margin-top:20px">
-          <span class="spec-pill">متعدد اللغات</span>
-          <span class="spec-pill">ذكاء اصطناعي</span>
-          <span class="spec-pill">بلا انقطاع</span>
-          <span class="spec-pill spec-pill--green">يتطور ذاتياً</span>
-        </div>
-        <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)">
-          <div class="card__stat">≤1.5</div>
-          <div class="card__stat-label" style="color:rgba(255,255,255,.4)">ثانية — زمن الاستجابة P50</div>
-        </div>
+        <h3>كل ما تحتاجه، في نظام واحد</h3>
+        <ul style="list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.8)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>رد تلقائي على الأسئلة الشائعة</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.8)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>توجيه الزائر نحو الخدمة المناسبة</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.8)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>يعمل على مدار الساعة دون توقف</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.8)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>يتعلم من محتوى موقعك</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.8)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6DB8FF" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>سهل الإعداد دون خبرة تقنية</li>
+        </ul>
       </div>
 
       <div class="card card--dark reveal">
@@ -1301,24 +1297,24 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="label">كيف يعمل</span>
-      <h2>ثلاث خطوات، خمس دقائق</h2>
-      <p>من التسجيل حتى أول رد تلقائي على عملائك</p>
+      <h2>ابدأ خلال دقائق</h2>
+      <p>من التسجيل حتى أول رد تلقائي على زوارك</p>
     </div>
     <div class="steps">
       <div class="step reveal">
         <div class="step__n">١</div>
-        <h3>اربط متجرك</h3>
-        <p>اختَر سلة وسجِّل الدخول عبر OAuth الآمن — بنقرة واحدة، دون أي إعداد معقد.</p>
+        <h3>أضف معلومات مشروعك</h3>
+        <p>أدخل خدماتك والأسئلة الشائعة — البوت يقرأ محتواك ويتعلم منه تلقائياً.</p>
       </div>
       <div class="step reveal">
         <div class="step__n">٢</div>
-        <h3>أضف أسئلتك الشائعة</h3>
-        <p>أدخل إجاباتك في 5 فئات مُعدّة مسبقاً. مراد يتعلم بيانات منتجاتك تلقائياً.</p>
+        <h3>يتم إعداد البوت تلقائياً</h3>
+        <p>لا خبرة تقنية مطلوبة. النظام يُعِدّ البوت ويُهيِّئه بناءً على محتوى مشروعك.</p>
       </div>
       <div class="step reveal">
         <div class="step__n">٣</div>
-        <h3>مراد يُجيب 24/7</h3>
-        <p>شغِّل البوت من لوحة التحكم. يحصل عملاؤك على إجاباتهم فوراً في أي وقت.</p>
+        <h3>أضفه إلى موقعك وابدأ</h3>
+        <p>أضف البوت إلى موقعك وابدأ استقبال الزوار والرد على استفساراتهم فوراً.</p>
       </div>
     </div>
   </div>
@@ -1421,9 +1417,9 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
 <section class="pain">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="label">هل تجد نفسك في هذا الموقف؟</span>
-      <h2>المشكلة التي يعانيها كل تاجر</h2>
-      <p>مراد بُني خصيصاً لحل هذه المشكلات الحقيقية</p>
+      <span class="label">المشكلة</span>
+      <h2>هل يغادر زوار موقعك دون أن تجد لهم إجابة؟</h2>
+      <p>يدخل العميل إلى موقعك، يبحث عن معلومة بسيطة، لا يجد ردًا فوريًا… فيغادر. وفي كثير من الحالات، لا يعود مرة أخرى.</p>
     </div>
     <div class="pain-grid">
       <div class="quote-card reveal">
@@ -1661,10 +1657,11 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
       التسجيل مفتوح — مجاني بدون التزام
     </div>
 
-    <h2 class="reveal">سجّل وكن من أوائل المستخدمين</h2>
+    <h2 class="reveal">كن من أوائل المستخدمين</h2>
 
     <p class="beta__sub reveal">
-      سنتواصل معك عند الإطلاق. وإن رغبت في أن تكون من بين <strong style="color:#6DB8FF">50 متجراً</strong> المختارة للتجربة المبكرة، فعِّل الخيار أدناه.
+      سجّل الآن لتحصل على وصول مبكر عند الإطلاق،
+      واستفد من المزايا الحصرية للمستخدمين الأوائل.
     </p>
 
     <form class="beta-form reveal" id="regForm">
@@ -1699,7 +1696,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
       </label>
 
       <button type="submit" class="btn btn-primary btn-lg btn-full" id="regBtn">
-        سجّل الآن
+        انضم الآن إلى قائمة الانتظار
         <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </form>
@@ -1735,17 +1732,34 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
 <footer class="footer">
   <div class="wrap">
     <div class="footer__row">
-      <a href="#top" style="display:flex;align-items:center;gap:8px;text-decoration:none">
+      <!-- Logo — right -->
+      <a href="#top" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0">
         <img src="assets/7.jpg" alt="مراد بوت" style="height:28px;width:28px;border-radius:7px;object-fit:cover;flex-shrink:0">
         <span style="color:#fff;font-weight:700;font-size:15px">مراد بوت</span>
       </a>
-      <ul class="footer__links">
+      <!-- Nav links — center -->
+      <ul class="footer__links" style="position:absolute;left:50%;transform:translateX(-50%)">
         <li><a href="#features">المزايا</a></li>
         <li><a href="#how">كيف يعمل</a></li>
         <li><a href="#plans">الباقات</a></li>
         <li><a href="#faq">الأسئلة</a></li>
         <li><a href="#contact">تواصل معنا</a></li>
       </ul>
+      <!-- Social icons — left -->
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <!-- X (Twitter) -->
+        <a href="https://x.com/moradbot?s=21&t=ZCUUW3Z_ndyn4Iqtzmj4ng" target="_blank" rel="noopener" aria-label="X" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.258 5.624 5.906-5.624Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@moradbot" target="_blank" rel="noopener" aria-label="TikTok" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.77a4.85 4.85 0 0 1-1.01-.08z"/></svg>
+        </a>
+        <!-- Snapchat -->
+        <a href="https://snapchat.com/t/dbMAsWin" target="_blank" rel="noopener" aria-label="Snapchat" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </footer>
