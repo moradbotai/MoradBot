@@ -203,7 +203,6 @@ tr:hover td{background:var(--gray-50)}
 </div>
 
 <script>
-// كلمة المرور الافتراضية: morad2026
 // لتغييرها: شغّل `echo -n "كلمتك" | shasum -a 256` وضع الناتج هنا
 const STATS_HASH = '0ee0c4c14a0e54ed425b51dc982c703bf2d80782158a5d8d32feb780c7e2e960';
 
@@ -257,7 +256,7 @@ async function checkGate() {
   <div class="page-header-glow"></div>
   <div class="wrap page-header-inner">
     <h1 class="page-title">إحصاءات صفحة الهبوط</h1>
-    <p class="page-sub">البيانات الحقيقية من قاعدة البيانات — <strong>آخر تحديث: الآن</strong></p>
+    <p class="page-sub">البيانات الحقيقية من قاعدة البيانات — آخر تحديث: <strong id="lastUpdateTime">جاري التحميل...</strong></p>
   </div>
 </div>
 
@@ -472,12 +471,10 @@ function dateStr(iso){
 
 async function load() {
   try {
-    const [{ data, error }, { data: chats, error: chatErr }] = await Promise.all([
-      sb.from('waitlist_submissions').select('*').order('created_at', { ascending: false }),
-      sb.from('demo_chats').select('*').order('created_at', { ascending: true })
-    ]);
+    const { data: result, error } = await sb.rpc('get_landing_stats');
     if (error) throw error;
-    if (chatErr) console.warn('demo_chats error:', chatErr.message);
+    const data  = result.registrations || [];
+    const chats = (result.demo_chats || []).sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
 
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('statsContent').style.display = 'block';
@@ -568,11 +565,12 @@ async function load() {
       .join('') || '<tr><td colspan="3" style="text-align:center;color:var(--gray-400)">لا بيانات بعد</td></tr>';
 
     // Size breakdown
+    const sizeLabels = { '0-30':'أقل من 30 طلب', '30-80':'30 – 80 طلب', '100-200':'100 – 200 طلب', '200+':'أكثر من 200 طلب' };
     const sizes = {};
     data.forEach(r => { if(r.store_size) sizes[r.store_size] = (sizes[r.store_size]||0)+1; });
     document.getElementById('sizeTable').innerHTML = Object.entries(sizes)
       .sort((a,b)=>b[1]-a[1])
-      .map(([s,n]) => `<tr><td>${s} طلب</td><td><strong>${n}</strong></td><td>${pct(n,total)}</td></tr>`)
+      .map(([s,n]) => `<tr><td>${sizeLabels[s] || s}</td><td><strong>${n}</strong></td><td>${pct(n,total)}</td></tr>`)
       .join('') || '<tr><td colspan="3" style="text-align:center;color:var(--gray-400)">لا بيانات بعد</td></tr>';
 
     // Recent table
@@ -631,6 +629,7 @@ async function load() {
       </div>
     `;
     document.getElementById('sessionsCount').textContent = sessionIds.length;
+    document.getElementById('lastUpdateTime').textContent = new Date().toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'});
 
     if (sessionIds.length === 0) {
       document.getElementById('sessionsList').innerHTML =
@@ -644,7 +643,7 @@ async function load() {
         const msgsHtml = msgs.map(m => `
           <div class="chat-msg chat-msg--${m.role}">
             <span class="chat-bubble-role chat-bubble-role--${m.role}">${m.role === 'user' ? 'مستخدم' : 'بوت'}</span>
-            <span class="chat-bubble-text">${m.message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>
+            <span class="chat-bubble-text">${m.message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}</span>
             <span class="chat-bubble-time">${dateStr(m.created_at)}</span>
           </div>`).join('');
         return `
@@ -824,16 +823,28 @@ async function loadPostHog() {
       : devRows.map(r => phBar(r[0], r[1], devMax)).join('');
 
   } catch(e) {
-    document.getElementById('phSection').querySelector('.ph-kpi-grid').innerHTML =
-      `<div class="ph-error" style="grid-column:1/-1">⚠ ${e.message}</div>`;
+    const errHtml = `<div class="ph-error">⚠ ${e.message}</div>`;
+    document.getElementById('phKpis').innerHTML   = `<div class="ph-error" style="grid-column:1/-1">⚠ ${e.message}</div>`;
+    document.getElementById('phTrend').innerHTML  = errHtml;
+    document.getElementById('phVitals').innerHTML = errHtml;
+    document.getElementById('phSources').innerHTML= errHtml;
+    document.getElementById('phDevices').innerHTML= errHtml;
     console.error('PostHog error:', e);
   }
 }
 
-// تحديث تلقائي كل 30 ثانية
 loadPostHog();
 load();
-setInterval(load, 30000);
+
+let _refreshTimer = setInterval(load, 30000);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    clearInterval(_refreshTimer);
+  } else {
+    load();
+    _refreshTimer = setInterval(load, 30000);
+  }
+});
 </script>
 </body>
 </html>

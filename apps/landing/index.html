@@ -30,18 +30,7 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "w56skieza7");
 </script>
-<!-- TODO: أضف Cloudflare Web Analytics beacon هنا -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<!-- PostHog Analytics -->
-<script>
-!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId setPersonPropertiesForFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7', {
-  api_host: 'https://us.i.posthog.com',
-  person_profiles: 'identified_only',
-  capture_pageview: true,
-  capture_pageleave: true,
-});
-</script>
 <!-- Task 11: force scroll to top before anything renders -->
 <script>if(history.scrollRestoration)history.scrollRestoration='manual';window.scrollTo(0,0);</script>
 
@@ -157,6 +146,12 @@ body{
 .btn-lg{font-size:16px;padding:13px 28px}
 .btn-sm{font-size:13px;padding:8px 16px}
 .btn-full{width:100%;justify-content:center}
+@keyframes btn-spin{to{transform:rotate(360deg)}}
+.btn-spinner{
+  display:inline-block;width:14px;height:14px;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.35);border-top-color:#fff;
+  border-radius:50%;animation:btn-spin .65s linear infinite;
+}
 
 /* Inputs — Notion spec: 4px radius, no shadow */
 .field{
@@ -287,9 +282,11 @@ select.field-light option{background:#fff;color:var(--near-black)}
 .nav__mobile ul a:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav__mobile-btns{margin-top:auto;display:flex;flex-direction:column;gap:10px}
 
+.nav__trial-btn{display:none}
 @media(max-width:740px){
-  .nav__links,.nav__right .btn-ghost,.nav__right .btn-dark{display:none}
+  .nav__links,.nav__right .btn-ghost,.nav__right .btn-dark,.nav__right .btn-primary{display:none}
   .nav__hamburger{display:flex}
+  .nav__trial-btn{display:flex!important}
 }
 
 /* ═══ HERO ═════════════════════════════════════════ */
@@ -927,8 +924,6 @@ select.field-light option{background:#fff;color:var(--near-black)}
 .msg--err{
   background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#F87171;
 }
-.btn.spin{opacity:.7;pointer-events:none;cursor:not-allowed}
-
 /* ═══ FOOTER ════════════════════════════════════════ */
 .footer{
   background:var(--dark);border-top:1px solid rgba(255,255,255,.06);
@@ -1095,6 +1090,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
 </svg>
 
 <!-- ══ NAV ════════════════════════════════════════ -->
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 <nav class="nav" id="nav">
   <div class="nav__inner">
     <div class="nav__row">
@@ -1112,6 +1108,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
       <div class="nav__right">
         <a href="#demo" class="btn btn-ghost btn-sm">جرّب الآن ←</a>
         <a href="#register" class="btn btn-primary btn-sm">سجّل الآن</a>
+        <a href="#demo" class="btn btn-primary btn-sm nav__trial-btn">التجربة ←</a>
         <button class="nav__hamburger" id="navMenuBtn" aria-label="فتح القائمة">
           <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
             <rect x="0" y="0" width="20" height="2" rx="1" fill="currentColor"/>
@@ -1138,6 +1135,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
   </div>
 </nav>
 
+<main>
 <!-- ══ HERO ══════════════════════════════════════ -->
 <section class="hero" id="top">
   <div class="hero__glow"></div>
@@ -1154,8 +1152,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
     </h1>
 
     <p class="hero__sub reveal">
-      بوت ذكي مدمج داخل موقعك يرد على الزوار فورًا، يجيب على أسئلتهم،
-      ويساعدهم على اتخاذ قرار الشراء — دون تدخل منك.
+      كأنك ثبّتت ChatGPT في متجرك — لكنه يعرف كل منتج عندك باسمه وسعره وتوفره وتفاصيله.
     </p>
 
     <div class="hero__form-wrap reveal">
@@ -1370,6 +1367,12 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
       <h2>باقة لكل حجم متجر</h2>
       <p>الأسعار ستُعلن عند الإطلاق — سجّل الآن للحصول على عرض الأوائل</p>
     </div>
+    <div style="display:flex;justify-content:center;margin-bottom:32px" class="reveal">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:#EEF6FF;border:1.5px solid #BDD9FF;border-radius:12px;padding:12px 22px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0075DE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span style="font-size:14px;color:#01041B;font-weight:600">المسجّلون في قائمة الانتظار يحصلون على <span style="color:#0075DE">خصم 30٪ على أول شهر</span> عند الإطلاق</span>
+      </div>
+    </div>
     <div class="plans-row">
       <div class="plan reveal">
         <h3>
@@ -1467,6 +1470,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         <button class="demo-pill" onclick="askDemo('كم يستغرق إعداد البوت؟')">كم يستغرق الإعداد؟</button>
         <button class="demo-pill" onclick="askDemo('هل يدعم منصة سلة؟')">هل يدعم سلة؟</button>
         <button class="demo-pill" onclick="askDemo('ما الفرق بين الباقات؟')">الفرق بين الباقات</button>
+        <button class="demo-pill" onclick="askDemo('ما الفرق بين قائمة الانتظار والتجربة المبكرة؟')">الفرق بين طريقتَي التسجيل</button>
       </div>
     </div>
 
@@ -1563,6 +1567,18 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
 
       <div class="faq-q">
         <button class="faq-btn" onclick="faq(this)">
+          <span>ما الفرق بين قائمة الانتظار والتجربة المبكرة؟</span>
+          <svg class="faq-ico icon"><use href="#ic-plus"/></svg>
+        </button>
+        <div class="faq-body">
+          <p>خياران مختلفان لنفس الهدف:</p>
+          <p>— <strong>قائمة الانتظار:</strong> سجّل بريدك الآن واحجز مكانك دون أي التزام. تحصل على خصم 30٪ على أول شهر عند الإطلاق وتكون أول من يعلم.</p>
+          <p>— <strong>التجربة المبكرة:</strong> جرّب مراد بوت كاملاً في متجرك الحقيقي الآن — مجاناً 3 أشهر كاملة بدون بطاقة ائتمان، مقابل 20 دقيقة من وقتك لمشاركتنا رأيك. الأماكن محدودة بـ 50 متجراً فقط.</p>
+        </div>
+      </div>
+
+      <div class="faq-q">
+        <button class="faq-btn" onclick="faq(this)">
           <span>متى سيكون مراد بوت متاحاً للجميع؟</span>
           <svg class="faq-ico icon"><use href="#ic-plus"/></svg>
         </button>
@@ -1606,7 +1622,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
           <li style="font-size:13px;color:var(--gray-500);display:flex;gap:8px;align-items:flex-start">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0075DE" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>
-            خصم إطلاق خاص لأول 50 مسجّل
+            <strong style="color:#0075DE">خصم 30٪ على أول شهر</strong> عند الإطلاق
           </li>
           <li style="font-size:13px;color:var(--gray-500);display:flex;gap:8px;align-items:flex-start">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0075DE" stroke-width="2.5" style="flex-shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1632,7 +1648,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           تجربة مبكرة
         </div>
-        <h3 style="font-size:20px;font-weight:700;margin-bottom:10px;color:#fff">مختبر مراد بوت</h3>
+        <h3 style="font-size:20px;font-weight:700;margin-bottom:10px;color:#fff">التجربة المبكرة</h3>
         <p style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:20px">استخدم مراد بوت كاملاً في متجرك الحقيقي — مجاناً — مقابل 20 دقيقة من وقتك لمشاركتنا رأيك.</p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
           <li style="font-size:13px;color:rgba(255,255,255,.65);display:flex;gap:8px;align-items:flex-start">
@@ -1687,6 +1703,7 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         </select>
         <select class="field" name="store_size" required>
           <option value="" disabled selected>حجم المتجر (طلبات/شهر)</option>
+          <option value="0-30">أقل من ٣٠ طلب</option>
           <option value="30-80">٣٠ – ٨٠ طلب</option>
           <option value="100-200">١٠٠ – ٢٠٠ طلب</option>
           <option value="200+">أكثر من ٢٠٠ طلب</option>
@@ -1768,6 +1785,10 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
         <a href="https://www.youtube.com/@moradbot_ai" target="_blank" rel="noopener" aria-label="YouTube" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/moradbot_ai?igsh=NDA4OWh6bW9yODNn&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </a>
         <!-- Snapchat -->
         <a href="https://snapchat.com/t/dbMAsWin" target="_blank" rel="noopener" aria-label="Snapchat" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);transition:background 140ms,color 140ms;text-decoration:none" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)'">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>
@@ -1776,11 +1797,9 @@ posthog.init('phc_vjnzDmVwGeMbvdm3qCo7wdgjext4EtkhZKsdvGuLMqM7',{api_host:'https
     </div>
   </div>
 </footer>
+</main>
 
 <script>
-/* ── Scroll to top always ── */
-window.scrollTo(0, 0);
-
 /* ── Config ── */
 const { createClient } = window.supabase;
 const sb = createClient(
@@ -1789,11 +1808,13 @@ const sb = createClient(
 );
 
 /* ── Demo session ID (unique per page load) ── */
-const DEMO_SESSION = crypto.randomUUID();
+const DEMO_SESSION = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+  ? crypto.randomUUID()
+  : Math.random().toString(36).slice(2) + Date.now().toString(36);
 
 /* ── Nav scroll + mobile menu ───────────────── */
 const nav = document.getElementById('nav');
-addEventListener('scroll', () => nav.classList.toggle('on', scrollY > 16), {passive:true});
+window.addEventListener('scroll', () => nav.classList.toggle('on', window.scrollY > 16), {passive:true});
 
 const navMenuBtn = document.getElementById('navMenuBtn');
 const navMobile  = document.getElementById('navMobile');
@@ -1887,17 +1908,18 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
     wants_beta: wantsBeta,
   };
 
-  btnEl.classList.add('spin');
-  btnEl.textContent = 'جارٍ الإرسال...';
+  const savedHTML = btnEl.innerHTML;
+  btnEl.disabled = true;
+  btnEl.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px">جارٍ الإرسال... <span class="btn-spinner"></span></span>';
 
   const { error } = await sb.from('waitlist_submissions').insert([payload]);
 
-  btnEl.classList.remove('spin');
+  btnEl.disabled = false;
+  btnEl.innerHTML = savedHTML;
 
   if (error) {
     console.error('Supabase insert error:', error, 'payload:', payload);
     errEl.classList.add('show');
-    btnEl.textContent = 'حاول مجدداً';
     setTimeout(() => { errEl.classList.remove('show'); }, 4000);
     return;
   }
@@ -1912,7 +1934,6 @@ async function submit(formEl, btnEl, okEl, errEl, formType) {
     form_type:  formType,
     platform:   payload.platform,
     store_size: payload.store_size,
-    has_phone:  !!payload.phone,
     wants_beta: !!payload.wants_beta,
   });
   if (payload.email) {
@@ -1945,6 +1966,14 @@ document.getElementById('regForm').addEventListener('submit', e => {
 /* ── Live Demo Chat ─────────────────────────────── */
 const DEMO_WEBHOOK = 'https://n8n.junkpro.duckdns.org/webhook/chat-landing';
 
+/* تهريب HTML كامل لمنع أي حقن */
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+
 function formatBotReply(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, '$1')
@@ -1956,7 +1985,7 @@ function addBotMsg(msgs, text) {
   msgs.insertAdjacentHTML('beforeend', `
     <div class="chat-msg chat-msg--bot">
       <div class="chat-msg-avatar"><img src="assets/37.jpg" alt=""></div>
-      <div class="chat-bubble chat-bubble--bot">${text}</div>
+      <div class="chat-bubble chat-bubble--bot">${escHtml(text)}</div>
     </div>`);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -1965,7 +1994,7 @@ function addUserMsg(msgs, text) {
   msgs.insertAdjacentHTML('beforeend', `
     <div class="chat-msg chat-msg--user">
       <div class="user-avatar">أنت</div>
-      <div class="chat-bubble chat-bubble--user">${text.replace(/</g,'&lt;')}</div>
+      <div class="chat-bubble chat-bubble--user">${escHtml(text)}</div>
     </div>`);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -2003,8 +2032,9 @@ async function sendDemoMsg() {
   posthog.capture('demo_message_sent', { message_length: text.length });
   const typingId = showTyping(msgs);
 
-  const { error: userErr } = await sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'user', message: text }]);
-  if (userErr) console.error('demo_chats insert user:', userErr.message);
+  /* حفظ رسالة المستخدم بالتوازي — لا ننتظرها */
+  sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'user', message: text }])
+    .then(({ error }) => { if (error) console.error('demo_chats user:', error.message); });
 
   try {
     const res = await fetch(DEMO_WEBHOOK, {
@@ -2020,14 +2050,32 @@ async function sendDemoMsg() {
         (Array.isArray(data) && (data[0]?.reply || data[0]?.output)) || reply;
     } catch(_) { if (raw.trim()) reply = raw.trim(); }
     document.getElementById(typingId)?.remove();
-    addBotMsg(msgs, formatBotReply(reply).replace(/</g,'&lt;'));
-    const { error: botErr } = await sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'bot', message: reply }]);
-    if (botErr) console.error('demo_chats insert bot:', botErr.message);
+    addBotMsg(msgs, formatBotReply(reply));
+    /* حفظ رد البوت بالتوازي — لا ننتظره */
+    sb.from('demo_chats').insert([{ session_id: DEMO_SESSION, role: 'bot', message: reply }])
+      .then(({ error }) => { if (error) console.error('demo_chats bot:', error.message); });
   } catch(e) {
     document.getElementById(typingId)?.remove();
     addBotMsg(msgs, 'عذراً، تعذَّر الردُّ في الوقت الراهن. يُرجى المحاولة مجدداً.');
   }
 }
+
+/* تسخين الـ webhook لما المستخدم يقترب من قسم الديمو */
+(function() {
+  const demoSection = document.getElementById('demo');
+  if (!demoSection) return;
+  const warmer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      fetch(DEMO_WEBHOOK, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ ping: true, source: 'landing_demo' })
+      }).catch(() => {});
+      warmer.disconnect();
+    }
+  }, { threshold: 0.1 });
+  warmer.observe(demoSection);
+})();
 </script>
 </body>
 </html>
