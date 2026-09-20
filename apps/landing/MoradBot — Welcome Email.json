@@ -1,0 +1,238 @@
+{
+  "name": "MoradBot — Welcome Email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "moradbot-waitlist",
+        "options": {}
+      },
+      "id": "5bd73f7a-d6aa-48ba-a981-af6e5f2a97bf",
+      "name": "Supabase — New Submission",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        320
+      ],
+      "webhookId": "3a7ab6fa-af28-4fae-b340-525f1c50827a"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.record.platform }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "salla",
+              "id": "7e1b80c0-5554-49df-bc98-05a9ea3c3939"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ef519c17-45b0-4dd4-9b52-ebb3b3bea0a1",
+      "name": "منصة سلة؟",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "moradbot.ai@gmail.com",
+        "toEmail": "={{ $json.body.record.email }}",
+        "subject": "=أهلاً {{ $json.body.record.name }} — منصتك قادمة قريباً ✨",
+        "html": "=<!DOCTYPE html><html dir=\"rtl\" lang=\"ar\"><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:0;direction:rtl}.wrap{max-width:600px;margin:32px auto;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb}.header{background:#01041B;padding:32px 28px;text-align:center}.header h1{color:#ffffff;margin:0;font-size:22px;font-weight:700}.header span{color:#0075DE;font-size:13px;letter-spacing:.06em;text-transform:uppercase}.body{padding:32px 28px;color:#1a1a1a;line-height:1.9;font-size:15px}.body h2{color:#0075DE;font-size:18px;margin-bottom:6px}.highlight{background:#EEF6FF;border-right:3px solid #0075DE;padding:14px 16px;border-radius:6px;margin:20px 0;font-size:14px;color:#333}.steps{list-style:none;padding:0;margin:20px 0}.steps li{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}.step-num{font-size:15px;font-weight:700;color:#0075DE;flex-shrink:0;min-width:18px}.btn{display:inline-block;background:#0075DE;color:#fff;padding:12px 26px;border-radius:7px;text-decoration:none;font-weight:600;margin-top:8px}.reply-note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;margin-top:24px;font-size:14px;color:#555}.footer{background:#f4f4f4;padding:16px 28px;text-align:center;font-size:12px;color:#9ca3af}</style></head><body><div class=\"wrap\"><div class=\"header\"><h1>مراد بوت</h1><span>AI Customer Support for Salla</span></div><div class=\"body\"><h2>أهلاً {{ $json.body.record.name }} ،</h2><p>اسمي محمد — المؤسس والرئيس التنفيذي لمراد بوت.</p><p>تسجيلك وصلنا وشكراً على اهتمامك بمراد بوت.</p><div class=\"highlight\">📋 <strong>تفاصيل تسجيلك:</strong><br>الاسم: {{ $json.body.record.name }}<br>البريد: {{ $json.body.record.email }}<br>المنصة: {{ $json.body.record.platform }}</div><p>حالياً مراد بوت متاح لتجار <strong>سلة</strong> فقط — لكن منصة <strong>{{ $json.body.record.platform }}</strong> في خطتنا القادمة.</p><p>سنبلّغك فور إضافة دعم منصتك — أنت من أوائل القائمة.</p><div class=\"reply-note\">💬 <strong>سؤال واحد بس — ما أكبر تحدي في خدمة عملاء متجرك الآن؟</strong><br>اضغط \"رد\" وأخبرني. أقرأ كل رسالة وأرد شخصياً.</div></div><div class=\"footer\"><p>© 2026 مراد بوت · هذا البريد أُرسل تلقائياً</p><p>تم تسجيلك بهذا البريد: {{ $json.body.record.email }}</p></div></div></body></html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "2c93e682-909d-478c-b7a1-9cc2ba679545",
+      "name": "Email — Other Platform",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        688,
+        416
+      ],
+      "webhookId": "85b85e14-de71-4718-9d49-91c0dc7f1002",
+      "credentials": {
+        "smtp": {
+          "id": "axRJbDyX7hC5jvfp",
+          "name": "Gmail SMTP MoradBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.record.form_type }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "beta_tester",
+              "id": "9feea942-eaf2-4807-9abe-3b9316372533"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "860627b8-3945-42a8-8200-db08bfba2522",
+      "name": "Is Beta Tester?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "moradbot.ai@gmail.com",
+        "toEmail": "={{ $json.body.record.email }}",
+        "subject": "=أهلاً {{ $json.body.record.name }} — طلب التجربة وصلنا! 🚀",
+        "html": "=<!DOCTYPE html><html dir=\"rtl\" lang=\"ar\"><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:0;direction:rtl}.wrap{max-width:600px;margin:32px auto;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb}.header{background:#01041B;padding:32px 28px;text-align:center}.header h1{color:#ffffff;margin:0;font-size:22px;font-weight:700}.header span{color:#0075DE;font-size:13px;letter-spacing:.06em;text-transform:uppercase}.body{padding:32px 28px;color:#1a1a1a;line-height:1.9;font-size:15px}.body h2{color:#0075DE;font-size:18px;margin-bottom:6px}.highlight{background:#EEF6FF;border-right:3px solid #0075DE;padding:14px 16px;border-radius:6px;margin:20px 0;font-size:14px;color:#333}.steps{list-style:none;padding:0;margin:20px 0}.steps li{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}.step-num{font-size:15px;font-weight:700;color:#0075DE;flex-shrink:0;min-width:18px}.btn{display:inline-block;background:#0075DE;color:#fff;padding:12px 26px;border-radius:7px;text-decoration:none;font-weight:600;margin-top:8px}.reply-note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;margin-top:24px;font-size:14px;color:#555}.footer{background:#f4f4f4;padding:16px 28px;text-align:center;font-size:12px;color:#9ca3af}</style></head><body><div class=\"wrap\"><div class=\"header\"><h1>مراد بوت</h1><span>AI Customer Support for Salla</span></div><div class=\"body\"><h2>أهلاً {{ $json.body.record.name }} ،</h2><p>اسمي محمد — المؤسس والرئيس التنفيذي لمراد بوت.</p><p>طلب التجربة وصلنا وسجّلناك كـ<strong>مختبِر أولوية</strong> قبل الإطلاق العام.</p><div class=\"highlight\">📋 <strong>تفاصيل تسجيلك:</strong><br>الاسم: {{ $json.body.record.name }}<br>البريد: {{ $json.body.record.email }}<br>المنصة: {{ $json.body.record.platform }}</div><p>إليك 3 أشياء ستحدث قريباً:</p><ul class=\"steps\"><li><span class=\"step-num\">1.</span><span>ستتواصل معك قريباً للحصول على وصول مبكر قبل الجميع</span></li><li><span class=\"step-num\">2.</span><span>جهّز متجرك على سلة — سنربطه معاً بمراد بوت مباشرة في جلسة الإعداد</span></li><li><span class=\"step-num\">3.</span><span>ستكون جزءاً من تشكيل المنتج — رأيك يُحسب مباشرة</span></li></ul><a href=\"https://moradbot.com/#demo\" class=\"btn\" style=\"display:inline-block;background:#0075DE;color:#ffffff !important;padding:12px 26px;border-radius:7px;text-decoration:none;font-weight:600;margin-top:8px;\">جرّب الديمو الآن</a><div class=\"reply-note\">💬 <strong>سؤال واحد بس — ما المشكلة اللي دفعتك تسجّل اليوم؟</strong><br>اضغط \"رد\" وأخبرني. أقرأ كل رسالة وأرد شخصياً.</div></div><div class=\"footer\"><p>© 2026 مراد بوت · هذا البريد أُرسل تلقائياً</p><p>تم تسجيلك بهذا البريد: {{ $json.body.record.email }}</p></div></div></body></html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "7078b433-ff38-426e-b88c-df98722b07bc",
+      "name": "Email — Beta Tester",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        128
+      ],
+      "webhookId": "a1ae275f-88f2-41d6-830f-7bff8b895fa8",
+      "credentials": {
+        "smtp": {
+          "id": "axRJbDyX7hC5jvfp",
+          "name": "Gmail SMTP MoradBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "moradbot.ai@gmail.com",
+        "toEmail": "={{ $json.body.record.email }}",
+        "subject": "=أهلاً {{ $json.body.record.name }} — أنت في قائمة الانتظار ✅",
+        "html": "=<!DOCTYPE html><html dir=\"rtl\" lang=\"ar\"><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:0;direction:rtl}.wrap{max-width:600px;margin:32px auto;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb}.header{background:#01041B;padding:32px 28px;text-align:center}.header h1{color:#ffffff;margin:0;font-size:22px;font-weight:700}.header span{color:#0075DE;font-size:13px;letter-spacing:.06em;text-transform:uppercase}.body{padding:32px 28px;color:#1a1a1a;line-height:1.9;font-size:15px}.body h2{color:#0075DE;font-size:18px;margin-bottom:6px}.highlight{background:#EEF6FF;border-right:3px solid #0075DE;padding:14px 16px;border-radius:6px;margin:20px 0;font-size:14px;color:#333}.steps{list-style:none;padding:0;margin:20px 0}.steps li{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}.step-num{font-size:15px;font-weight:700;color:#0075DE;flex-shrink:0;min-width:18px}.btn{display:inline-block;background:#0075DE;color:#fff;padding:12px 26px;border-radius:7px;text-decoration:none;font-weight:600;margin-top:8px}.reply-note{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;margin-top:24px;font-size:14px;color:#555}.footer{background:#f4f4f4;padding:16px 28px;text-align:center;font-size:12px;color:#9ca3af}</style></head><body><div class=\"wrap\"><div class=\"header\"><h1>مراد بوت</h1><span>AI Customer Support for Salla</span></div><div class=\"body\"><h2>أهلاً {{ $json.body.record.name }} ،</h2><p>اسمي محمد — المؤسس والرئيس التنفيذي لمراد بوت.</p><p>أنشأنا مراد بوت لأننا أردنا حلاً فعلياً يخدم عملاء متجرك <strong>24/7 بلغتهم</strong> — بدون تعقيد ولا تقنيين.</p><p>تسجيلك وصل وأنت الآن في القائمة. وصولك المبكر قادم.</p><div class=\"highlight\">✅ <strong>تم التسجيل بنجاح:</strong><br>الاسم: {{ $json.body.record.name }}<br>البريد: {{ $json.body.record.email }}<br>المنصة: {{ $json.body.record.platform }}</div><p>إليك 3 أشياء لتستعد:</p><ul class=\"steps\"><li><span class=\"step-num\">1.</span><span>جرّب الديمو على الموقع — شوف كيف يرد مراد بوت على أسئلة عملاء متجرك</span></li><li><span class=\"step-num\">2.</span><span>شارك الموقع مع تجّار تعرفهم — ستُعطي الأولوية للحسابات المُحالة</span></li><li><span class=\"step-num\">3.</span><span>ترقّب الإطلاق — سنبلّغك قبل الجميع</span></li></ul><a href=\"https://moradbot.com/#demo\" class=\"btn\" style=\"display:inline-block;background:#0075DE;color:#ffffff !important;padding:12px 26px;border-radius:7px;text-decoration:none;font-weight:600;margin-top:8px;\">جرّب الديمو الآن</a><div class=\"reply-note\">💬 <strong>سؤال واحد بس — ما المشكلة اللي دفعتك تسجّل اليوم؟</strong><br>اضغط \"رد\" وأخبرني. أقرأ كل رسالة وأرد شخصياً.</div></div><div class=\"footer\"><p>© 2026 مراد بوت · هذا البريد أُرسل تلقائياً</p><p>تم تسجيلك بهذا البريد: {{ $json.body.record.email }}</p></div></div></body></html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "ca0c222d-2a54-4fa3-b098-902a8ad90c75",
+      "name": "Email — Waitlist",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        320
+      ],
+      "webhookId": "53bae5ac-8cdf-4efc-a110-84ef270d3339",
+      "credentials": {
+        "smtp": {
+          "id": "axRJbDyX7hC5jvfp",
+          "name": "Gmail SMTP MoradBot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Supabase — New Submission": {
+      "main": [
+        [
+          {
+            "node": "منصة سلة؟",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "منصة سلة؟": {
+      "main": [
+        [
+          {
+            "node": "Is Beta Tester?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Email — Other Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Beta Tester?": {
+      "main": [
+        [
+          {
+            "node": "Email — Beta Tester",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Email — Waitlist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "iWgV4FGAkBLgyooS",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "e067a8b1-c6de-40dc-bf71-ca16181f6a23",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "instanceId": "01da8987e1992513eb1d90f5a56aaaa2895f6f08202cb232ab2aa9e1754c8f2c"
+  },
+  "id": "36uPa0pU3xxbueFh",
+  "tags": [
+    {
+      "updatedAt": "2026-04-02T23:22:43.942Z",
+      "createdAt": "2026-04-02T23:22:43.942Z",
+      "id": "Yaa0nut6GFK13zqU",
+      "name": "تم"
+    }
+  ]
+}

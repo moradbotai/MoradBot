@@ -4,3 +4,8 @@ compatibility_date = "2025-11-01"
 
 # Serve static files + PostHog reverse proxy via worker.js
 assets = { directory = "." }
+
+routes = [
+  { pattern = "moradbot.com", custom_domain = true },
+  { pattern = "www.moradbot.com", custom_domain = true }
+]

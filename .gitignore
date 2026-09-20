@@ -70,3 +70,6 @@ open_source_projects/
 
 # MCP Server config (contains API keys — use .mcp.json.example as template)
 .mcp.json
+.codex/
+.agents/
+node_modules.nosync/
